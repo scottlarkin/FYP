@@ -1,0 +1,66 @@
+﻿/* MIXINS*/
+/* END MIXINS*/
+/* VARIABLES */
+/* END VARIABLES */
+.checksheetTable {
+  font-weight: bold;
+}
+
+.checksheetTable--row {
+  color: #FFFFFF;
+  height: 40px;
+}
+
+.checksheetTable--row:nth-child(even), .checksheetTable--row:nth-child(even) input {
+  background-color: #4f4f4f;
+}
+
+.checksheetTable--row:nth-child(odd), .checksheetTable--row:nth-child(odd) input {
+  background-color: #303030;
+}
+
+.checksheetTable--row:first-child, .checksheetTable--row:first-child input {
+  background-color: #222222;
+}
+
+.checksheetTable--row input {
+  color: white;
+}
+
+.checksheetTable--fieldInput {
+  border: 1px solid #333333;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  -webkit-background-clip: padding-box;
+  /* for Safari */
+  background-clip: padding-box;
+  /* for IE9+, Firefox 4+, Opera, Chrome */
+  width: 120px;
+  height: 90%;
+  padding-left: 2px;
+}
+
+.checksheetTable--fieldInput:focus {
+  border: 2px solid #0c60b1;
+}
+
+.checksheetTable--fieldInput--error {
+  border: 2px solid #ba0808;
+}
+
+.checksheetTable--deleteButton {
+  background-color: white  !important;
+  color: black             !important;
+  font-weight: bolder        !important;
+  border: none               !important;
+  float: left                !important;
+  margin-left: 3px           !important;
+  margin-right: 2px          !important;
+}
+
+.checksheetTable--fieldTitle--Dropdown {
+  float: left;
+  padding-right: 4px;
+  width: 80px;
+}
+
+/*# sourceMappingURL=Styles.css.map */

@@ -1,0 +1,48 @@
+﻿<br />
+<div ng-controller="CompleteRoutine">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <h2 class="col-lg-10">Routine Name: {{routine.Name}}</h2>
+                <h2 class="col-lg-10">Routine Name: {{routine.ID}}</h2>
+            </div>
+            <div class="row">
+                <span class="col-lg-2">Routine Description: </span>
+                <textarea class="textInput col-lg-10" ng-model="routine.Description"></textarea>
+            </div>
+           
+            <div class="row" ng-repeat="Checksheet in routine.Checksheets">
+                <br />
+                <h3>{{Checksheet.Name}}</h3>
+
+                <table class="checksheetTable">
+
+                    <tr class="checksheetTable--row" ng-repeat="Record in Checksheet.Records" ng-if="$index < 1">
+                        <td>
+                            <p>{{Record.Name}}<p/>
+                        </td>
+                        <td ng-repeat="Field in Checksheet.Fields">
+                            <p>{{Field.Name}}</p>
+                        </td>
+                    </tr>
+
+                    <tr class="checksheetTable--row" ng-repeat="Record in Checksheet.Records" ng-if="$index > 0">
+                        <td>
+                           
+                            <p>{{Record.Name}}</p>
+                        </td>
+                        <td ng-repeat="FieldValue in Record.FieldValues">
+                            <input class="js-input checksheetTable--fieldInput"
+                                   type="{{Checksheet.Fields[$index].Type.htmlType}}" ng-model="FieldValue.Value" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    var routineID = @ViewBag.RoutineID
+</script>
+<script src="~/Scripts/Checksheet.js"></script>

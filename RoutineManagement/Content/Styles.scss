@@ -1,0 +1,198 @@
+﻿/* MIXINS*/
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+          border-radius: $radius;
+}
+
+@mixin border-opacity($r, $g, $b, $o)
+{
+    border: 1px solid rgb($r*$o, $g*$o, $b*$o);
+    border: 1px solid rgba($r, $g, $b, $o);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+}
+
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: calculateRem($size);
+}
+
+@mixin keyframes($animation-name) {
+  @-webkit-keyframes $animation-name {
+    @content;
+  }
+  @-moz-keyframes $animation-name {
+    @content;
+  }  
+  @-ms-keyframes $animation-name {
+    @content;
+  }
+  @-o-keyframes $animation-name {
+    @content;
+  }  
+  @keyframes $animation-name {
+    @content;
+  }
+}
+
+@mixin animation($str) {
+  -webkit-animation: #{$str};
+  -moz-animation: #{$str};
+  -o-animation: #{$str};
+  animation: #{$str};      
+}
+
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+
+%clearfix {
+  *zoom: 1;
+  &:before, &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+%visuallyhidden {
+  margin: -1px;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip: rect(0, 0, 0, 0);
+  position: absolute;
+}
+
+/* END MIXINS*/
+
+
+/* VARIABLES */
+
+$ChecksheetTitle_Colour: #222222;
+$ChecksheetRowDark_Colour: #303030;
+$ChecksheetRowLight_Colour: #4f4f4f;
+$Background_Colour: #808080;
+
+$TextInputError_Colour: #ba0808;
+$TextInputSelected_Colour: #0c60b1;
+
+/* END VARIABLES */
+
+
+.body {
+   background-color:$Background_Colour;
+}
+
+
+.checksheetTable{
+    
+    font-weight:bold;
+}
+
+
+.checksheetTable--row{
+    color:#FFFFFF;
+    height:40px;
+}
+
+.checksheetTable--row:nth-child(even){
+    
+    background-color:$ChecksheetRowLight_Colour;
+}
+
+.checksheetTable--row:nth-child(odd){
+    background-color:$ChecksheetRowDark_Colour;
+}
+
+
+.checksheetTable--row:first-child {
+    background-color:$ChecksheetTitle_Colour;
+}
+
+.checksheetTable--row input
+{
+    color:white;
+}
+
+.textInput{
+    @include border-opacity(255,255,255,0.2);
+}
+
+.checksheetTable--row:nth-child(even) input {
+    @extend .checksheetTable--row:nth-child(even);
+}
+
+.checksheetTable--row:nth-child(odd) input {
+    @extend .checksheetTable--row:nth-child(odd);
+}
+
+.checksheetTable--row:first-child input {
+    @extend .checksheetTable--row:first-child;
+}
+
+.checksheetTable--fieldInput{
+    @include border-opacity(255,255,255,0.2);
+    width:120px;
+    height:90%;
+    padding-left:2px;
+
+}
+
+.checksheetTable--fieldInput:focus{
+    @extend .checksheetTable--fieldInput;
+    border:2px solid $TextInputSelected_Colour;
+}
+
+.checksheetTable--fieldInput--error{
+    @extend .checksheetTable--fieldInput;
+    border:2px solid $TextInputError_Colour !important;
+}
+
+.checksheetTable--fieldInput:focus .checksheetTable--fieldInput--error:focus{
+    @extend .checksheetTable--fieldInput;
+    border:2px solid $TextInputError_Colour !important;
+}
+
+
+.checksheetTable--deleteButton{
+    background-color:white  !important;
+    color:black             !important;
+    font-weight:bolder        !important;
+    border:none               !important;
+    float:left                !important;
+    margin-left:3px           !important;
+    margin-right:2px          !important;
+}
+
+
+.checksheetTable--fieldTitle--Dropdown{
+    float:left;
+    padding-right:4px;
+    width:80px;
+}
+
+.checksheetTable--cell{
+
+
+}

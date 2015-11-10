@@ -11,7 +11,6 @@ namespace RoutineManagement.App_Start
             {
                 database.ExecuteProcedure("dbo.RegisterUser");
             }
-
         }
     }
 }

@@ -1,1 +1,74 @@
-﻿<h2>Schedule:</h2>
+﻿<div ng-controller="Schedule">
+
+    <h2>Schedule</h2>
+
+    <input type="button" value="Schedule a Routine"/>
+
+    <p>{{test}}</p>
+    <h2 ng-if="schedule.ScheduledRoutines.length < 1">
+        No Routines Scheduled
+    </h2>
+
+    <table class="checksheetTable" ng-if="schedule.ScheduledRoutines.length > 0">
+        <tr class="checksheetTable--row">
+            <td>Routine name</td>
+            <td>Area</td>
+            <td>Assigned Team</td>
+            <td>Assigned User</td>
+            <td>Due Date</td>
+            <td>Completed On</td>
+            <td>Completed By</td>
+        </tr>
+        <tr class="checksheetTable--row" ng-repeat="Row in schedule.ScheduledRoutines">
+            <td>Routine name!</td>
+            <td>Area</td>
+            <td>{{Row.AssignedTeam}}</td>
+            <td>{{Row.AssignedUser}}</td>
+            <td>{{Row.DueOn}}</td>
+            <td>{{Row.CompletedOn}}</td>
+            <td>{{Row.Completedby}}</td>
+        </tr>
+    </table>
+
+    <div>
+
+        <p> Select Plant Area:</p>
+        <select>
+            
+        </select>
+
+        <p> Select Routine</p>
+        <select>
+
+        </select>
+
+        <p> Select Team</p>
+        <select>
+
+        </select>
+
+        <p> Select User</p>
+        <select>
+
+        </select>
+
+        <p>Enter Due Date</p>
+        <input type="date"/>
+
+        <p>Occurs Every</p>
+        <input type="number" />
+        <select>
+            <option>Days</option>
+            <option>Months</option>
+            <option>Years</option>
+        </select>
+
+        <p>Number of occurances:</p>
+        <input type="text"/>
+       
+
+    </div>
+
+
+</div>
+<script src="~/Scripts/Checksheet.js"></script>

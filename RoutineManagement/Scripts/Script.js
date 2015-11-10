@@ -16,11 +16,18 @@ var RoutineManagement = angular.module("RoutineManagement", []);
 
 RoutineManagement.controller("Schedule", function ($scope) {
 
+    $scope.schedule = new document.ChecksheetLib.Schedule();
+
+    $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
+    $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
+    $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
+    $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
+
     $scope.ScheduleRoutineClick = function () {
 
     }
 
-    $Scope.RoutineCLick = function () {
+    $scope.RoutineCLick = function () {
 
     }
 

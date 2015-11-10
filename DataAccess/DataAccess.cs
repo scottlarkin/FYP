@@ -34,7 +34,8 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                throw ex;
+               // throw ex;
+                return false;
             }
 
             return true;
@@ -148,7 +149,14 @@ namespace DataAccess
             {
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.ExecuteNonQuery();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch
+                {
+                    
+                }
             }
         }
 

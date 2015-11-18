@@ -2,7 +2,7 @@
 
     <h2>Schedule</h2>
 
-    <input type="button" value="Schedule a Routine"/>
+    <input type="button" value="Schedule a Routine" />
 
     <p>{{test}}</p>
     <h2 ng-if="schedule.ScheduledRoutines.length < 1">
@@ -30,30 +30,33 @@
         </tr>
     </table>
 
-    <div>
+    <div class="overlay">
+
+    </div>
+
+
+    <div class="popup">
+
 
         <p> Select Plant Area:</p>
-        <select>
-            
-        </select>
+        <select></select>
+        <br />
 
         <p> Select Routine</p>
-        <select>
-
-        </select>
+        <select></select>
+        <br />
 
         <p> Select Team</p>
-        <select>
+        <select></select>
+        <br />
 
-        </select>
-
-        <p> Select Users</p>
-        <select>
-
-        </select>
+        <p> Select User</p>
+        <select></select>
+        <br />
 
         <p>Enter Due Date</p>
-        <input type="date"/>
+        <input type="date" />
+        <br />
 
         <p>Occurs Every</p>
         <input type="number" />
@@ -62,11 +65,14 @@
             <option>Months</option>
             <option>Years</option>
         </select>
+        <br />
 
         <p>Number of occurances:</p>
-        <input type="text"/>
-       
+        <input type="number" />
 
+        <br />
+        <input type="button" value="Save" />
+        <input type="button" value="Cancel" />
     </div>
 
 

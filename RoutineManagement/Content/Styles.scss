@@ -14,6 +14,27 @@
     background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
 }
 
+@mixin box-sizing($box-model) {
+  -webkit-box-sizing: $box-model; // Safari <= 5
+     -moz-box-sizing: $box-model; // Firefox <= 19
+          box-sizing: $box-model;
+}
+
+@mixin centerer($horizontal: true, $vertical: true) {
+  position: absolute;
+  @if ($horizontal and $vertical) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } @else if ($horizontal) {
+    left: 50%;
+    transform: translate(-50%, 0);
+  } @else if ($vertical) {
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}
+
 @function calculateRem($size) {
   $remSize: $size / 16px;
   @return $remSize * 1rem;
@@ -102,6 +123,7 @@ $TextInputSelected_Colour: #0c60b1;
 
 .body {
    background-color:$Background_Colour;
+   @include box-sizing(border-box);
 }
 
 
@@ -133,7 +155,7 @@ $TextInputSelected_Colour: #0c60b1;
 
 .checksheetTable--row input
 {
-    color:white;
+    color:#FFFFFF;
 }
 
 .textInput{
@@ -157,7 +179,6 @@ $TextInputSelected_Colour: #0c60b1;
     width:120px;
     height:90%;
     padding-left:2px;
-
 }
 
 .checksheetTable--fieldInput:focus{
@@ -196,4 +217,41 @@ $TextInputSelected_Colour: #0c60b1;
 .checksheetTable--cell{
 
 
+}
+
+.overlay{
+    position:fixed;
+    top:0px;
+    left:0px;
+    background-color:rgb(0,0,0);
+    width:1920px;
+    height:965px;
+    z-index:10000;
+    @include opacity(0.98);
+}
+
+.popup{
+    background-color:rgb(255,255,255);
+    width:auto;
+    height:auto;
+    z-index:10001;
+    @include border-radius(10px);
+    @include centerer;
+
+    p{
+        padding:0;
+        margin:0;
+        float:left;
+    }
+
+    select{
+        float:left;
+        height:20px;
+    }
+
+    input{
+        height:20px;
+        float:left;
+        width:120px;
+    }
 }

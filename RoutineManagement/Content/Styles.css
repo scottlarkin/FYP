@@ -2,6 +2,13 @@
 /* END MIXINS*/
 /* VARIABLES */
 /* END VARIABLES */
+.body {
+  background-color: #808080;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 .checksheetTable {
   font-weight: bold;
 }
@@ -9,6 +16,7 @@
 .checksheetTable--row {
   color: #FFFFFF;
   height: 40px;
+  padding-right: 10px;
 }
 
 .checksheetTable--row:nth-child(even), .checksheetTable--row:nth-child(even) input {
@@ -24,10 +32,19 @@
 }
 
 .checksheetTable--row input {
-  color: white;
+  color: #FFFFFF;
 }
 
-.checksheetTable--fieldInput {
+.textInput {
+  border: 1px solid #333333;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  -webkit-background-clip: padding-box;
+  /* for Safari */
+  background-clip: padding-box;
+  /* for IE9+, Firefox 4+, Opera, Chrome */
+}
+
+.checksheetTable--fieldInput, .checksheetTable--fieldInput:focus, .checksheetTable--fieldInput--error, .checksheetTable--fieldInput:focus .checksheetTable--fieldInput--error:focus {
   border: 1px solid #333333;
   border: 1px solid rgba(255, 255, 255, 0.2);
   -webkit-background-clip: padding-box;
@@ -39,12 +56,16 @@
   padding-left: 2px;
 }
 
-.checksheetTable--fieldInput:focus {
+.checksheetTable--fieldInput:focus, .checksheetTable--fieldInput--error:focus, .checksheetTable--fieldInput:focus .checksheetTable--fieldInput--error:focus {
   border: 2px solid #0c60b1;
 }
 
 .checksheetTable--fieldInput--error {
-  border: 2px solid #ba0808;
+  border: 2px solid #ba0808 !important;
+}
+
+.checksheetTable--fieldInput:focus .checksheetTable--fieldInput--error:focus, .checksheetTable--fieldInput--error:focus .checksheetTable--fieldInput--error:focus {
+  border: 2px solid #ba0808 !important;
 }
 
 .checksheetTable--deleteButton {
@@ -61,6 +82,49 @@
   float: left;
   padding-right: 4px;
   width: 80px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: black;
+  width: 1920px;
+  height: 965px;
+  z-index: 10000;
+  opacity: 0.98;
+  filter: alpha(opacity=98);
+}
+
+.popup {
+  background-color: white;
+  width: auto;
+  height: auto;
+  z-index: 10001;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.popup p {
+  padding: 0;
+  margin: 0;
+  float: left;
+}
+
+.popup select {
+  float: left;
+  height: 20px;
+}
+
+.popup input {
+  height: 20px;
+  float: left;
+  width: 120px;
 }
 
 /*# sourceMappingURL=Styles.css.map */

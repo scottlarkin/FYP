@@ -138,3 +138,5 @@ function ValidateInput() {
 }
 
 $(document).on('keyup', '.js-input', ValidateInput);
+          
+    

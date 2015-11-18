@@ -4,3 +4,8 @@ C:\Users\Scott\documents\visual studio 2013\Projects\RoutineManagement\DataAcces
 C:\Users\Scott\documents\visual studio 2013\Projects\RoutineManagement\DataAccess\obj\Debug\DataAccess.pdb
 C:\Users\Scott\documents\visual studio 2013\Projects\RoutineManagement\DataAccess\bin\Debug\DataAccess.dll.CodeAnalysisLog.xml
 C:\Users\Scott\documents\visual studio 2013\Projects\RoutineManagement\DataAccess\bin\Debug\DataAccess.dll.lastcodeanalysissucceeded
+C:\Users\m2100705\FYP\DataAccess\bin\Debug\DataAccess.dll
+C:\Users\m2100705\FYP\DataAccess\bin\Debug\DataAccess.pdb
+C:\Users\m2100705\FYP\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache
+C:\Users\m2100705\FYP\DataAccess\obj\Debug\DataAccess.dll
+C:\Users\m2100705\FYP\DataAccess\obj\Debug\DataAccess.pdb

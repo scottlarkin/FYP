@@ -1,4 +1,5 @@
 ﻿using MvcApplication2.Models;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
@@ -40,6 +41,27 @@ namespace RoutineManagement.Controllers
             routine.Load(RoutineID);
 
             return new JavaScriptSerializer().Serialize(Json(routine).Data);
+        }
+
+        public string GetAreas()
+        {
+            List<string> areas = ScheduleModel.GetAreas();
+
+            return new JavaScriptSerializer().Serialize(Json(areas).Data);
+        }
+
+        public string GetTeamsByArea(string AreaName)
+        {
+            List<string> teams = ScheduleModel.GetTeamsByArea(AreaName);
+
+            return new JavaScriptSerializer().Serialize(Json(teams).Data);
+        }
+
+        public string GetUsersByTeam(string TeamName)
+        {
+            List<string> users = ScheduleModel.GetTeamsByArea(TeamName);
+
+            return new JavaScriptSerializer().Serialize(Json(users).Data);
         }
 
         public string LoadSchedule()

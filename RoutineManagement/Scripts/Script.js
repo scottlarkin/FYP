@@ -18,6 +18,66 @@ RoutineManagement.controller("Schedule", function ($scope) {
 
     $scope.schedule = new document.ChecksheetLib.Schedule();
 
+    $.ajax({
+        url: "http://localhost:57425/Home/GetAreas",
+        type: "GET",
+        contentType: 'application/json;',
+        dataType: 'json',
+
+        success: function (data) {
+            $scope.$apply(function () {
+                $scope.areas = data;
+                console.log(data);
+            });
+        },
+        fail: function (data) {
+            console.log('failed to lget areas: ');
+        }
+
+    });
+
+    $scope.getTeamsByArea = function (areaName) {
+
+        $.ajax({
+            url: "http://localhost:57425/Home/GetTeamsByArea",
+            type: "GET",
+            contentType: 'application/json;',
+            dataType: 'json',
+            data: { AreaName: areaname },
+
+            success: function (data) {
+                $scope.$apply(function () {
+                    $scope.Teams = data;
+                });
+            },
+            fail: function (data) {
+                console.log('failed to lget areas: ');
+            }
+
+        });
+    }
+
+    $scope.getUsersByTeam = function (teamName) {
+
+        $.ajax({
+            url: "http://localhost:57425/Home/GetUsersByTeam",
+            type: "GET",
+            contentType: 'application/json;',
+            dataType: 'json',
+            data: { TeamName: teamName },
+
+            success: function (data) {
+                $scope.$apply(function () {
+                    $scope.Teams = data;
+                });
+            },
+            fail: function (data) {
+                console.log('failed to lget areas: ');
+            }
+
+        });
+    }
+
     $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
     $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
     $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
@@ -48,7 +108,6 @@ RoutineManagement.controller("CompleteRoutine", function ($scope) {
         success: function (data) {
             $scope.$apply(function () {
                 $scope.routine = data;
-                console.log(data);
             });
         },
         fail: function (data) {

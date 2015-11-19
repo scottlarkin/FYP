@@ -221,8 +221,8 @@ $TextInputSelected_Colour: #0c60b1;
 
 .overlay{
     position:fixed;
-    top:0px;
-    left:0px;
+    top:0;
+    left:0;
     background-color:rgb(0,0,0);
     width:1920px;
     height:965px;
@@ -255,5 +255,9 @@ $TextInputSelected_Colour: #0c60b1;
         height:20px;
         float:left;
         width:120px;
+    }
+
+    span{
+        color:$TextInputError_Colour;
     }
 }

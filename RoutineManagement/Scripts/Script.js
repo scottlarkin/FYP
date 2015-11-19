@@ -37,7 +37,6 @@ RoutineManagement.controller("Schedule", function ($scope) {
         success: function (data) {
             $scope.$apply(function () {
                 $scope.Areas = data;
-                console.log(data);
             });
         },
         fail: function (data) {
@@ -61,7 +60,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
                 });
             },
             fail: function (data) {
-                console.log('failed to lget areas: ');
+                console.log('failed to get routines: ');
             }
 
         });
@@ -82,7 +81,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
                 });
             },
             fail: function (data) {
-                console.log('failed to lget areas: ');
+                console.log('failed to get teams: ');
             }
 
         });
@@ -100,10 +99,12 @@ RoutineManagement.controller("Schedule", function ($scope) {
             success: function (data) {
                 $scope.$apply(function () {
                     $scope.Users = data;
+                    $scope.SelectedTeam = teamName;
                 });
+
             },
             fail: function (data) {
-                console.log('failed to lget areas: ');
+                console.log('failed to get users: ');
             }
 
         });

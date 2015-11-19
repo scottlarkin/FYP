@@ -40,33 +40,36 @@
         <p> Select Plant Area:</p>
         <select ng-options="name for name in Areas"
                 ng-model="SelectedArea"
-                ng-change="areaChanged(SelectedArea)"></select>
+                ng-change="areaChanged(SelectedArea)">
+        </select>
+
         <br />
 
         <p> Select Routine: </p>
         <select ng-if="SelectedArea != ''"
                 ng-options="name for name in Routines"
-                ng-model="SelectedRoutine"></select>
+                ng-model="SelectedRoutine">
+        </select>
 
-        <p ng-if="SelectedArea == ''"> Must select an area first</p>
+        <p ng-if="SelectedArea == ''"><span> Must select an area first</span></p>
         <br />
 
         <p> Select Team: </p>
         <select ng-if="SelectedArea != ''"
                 ng-options="name for name in Teams"
                 ng-model="SelectedTeam"
-                ng-change="getUsersByTeam(SelectedTeam)"></select>
+                ng-change="getUsersByTeam(SelectedTeam)">
+        </select>
 
-        <p ng-if="SelectedArea == ''"> Must select an area first</p>
+        <p ng-if="SelectedArea == ''"><span> Must select an area first</span></p>
         <br />
 
         <p> Select User: </p>
-        <select ng-if="Teams.length > 0"
-            ng-options ="name for name in Users"
-            ng-model="SelectedUser">
-        </select>
+        <select ng-if="SelectedTeam != ''"
+                ng-options="name for name in Users"
+                ng-model="SelectedUser"></select>
 
-        <p ng-if="Teams.length < 1"> Must select a team first</p>
+        <p ng-if="SelectedTeam == ''"> <span>Must select a team first</span></p>
         <br />
 
         <p>Enter Due Date: </p>

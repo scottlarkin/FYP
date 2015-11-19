@@ -86,8 +86,8 @@
 
 .overlay {
   position: fixed;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   background-color: black;
   width: 1920px;
   height: 965px;
@@ -126,6 +126,10 @@
   height: 20px;
   float: left;
   width: 120px;
+}
+
+.popup span {
+  color: #ba0808;
 }
 
 /*# sourceMappingURL=Styles.css.map */

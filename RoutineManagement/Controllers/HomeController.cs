@@ -56,10 +56,16 @@ namespace RoutineManagement.Controllers
 
             return new JavaScriptSerializer().Serialize(Json(teams).Data);
         }
+        public string GetRoutinesByArea(string AreaName)
+        {
+            List<string> teams = ScheduleModel.GetRoutinesByArea(AreaName);
+
+            return new JavaScriptSerializer().Serialize(Json(teams).Data);
+        }
 
         public string GetUsersByTeam(string TeamName)
         {
-            List<string> users = ScheduleModel.GetTeamsByArea(TeamName);
+            List<string> users = ScheduleModel.GetUsersByTeam(TeamName);
 
             return new JavaScriptSerializer().Serialize(Json(users).Data);
         }

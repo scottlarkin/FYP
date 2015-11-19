@@ -17,6 +17,10 @@ var RoutineManagement = angular.module("RoutineManagement", []);
 RoutineManagement.controller("Schedule", function ($scope) {
 
     $scope.schedule = new document.ChecksheetLib.Schedule();
+   
+    $scope.Routines = new Array();
+    $scope.Teams = new Array();
+    $Scope.Users = new Array();
 
     $.ajax({
         url: "http://localhost:57425/Home/GetAreas",
@@ -35,6 +39,27 @@ RoutineManagement.controller("Schedule", function ($scope) {
         }
 
     });
+
+    $scope.getRoutinesByArea = function (areaName) {
+
+        $.ajax({
+            url: "http://localhost:57425/Home/GetRoutinesByArea",
+            type: "GET",
+            contentType: 'application/json;',
+            dataType: 'json',
+            data: { AreaName: areaname },
+
+            success: function (data) {
+                $scope.$apply(function () {
+                    $scope.Teams = data;
+                });
+            },
+            fail: function (data) {
+                console.log('failed to lget areas: ');
+            }
+
+        });
+    }
 
     $scope.getTeamsByArea = function (areaName) {
 
@@ -78,6 +103,8 @@ RoutineManagement.controller("Schedule", function ($scope) {
         });
     }
 
+
+    //temp for testing!
     $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
     $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
     $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());

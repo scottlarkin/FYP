@@ -53,6 +53,29 @@ namespace MvcApplication2.Models
 
         }
 
+        public static List<string> GetRoutinesByArea(string AreaName)
+        {
+            List<string> ret = new List<string>();
+
+            using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+
+                List<SqlParameter> parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("AreaName", SqlDbType.NVarChar) { Value = AreaName });
+
+                using (DataTable result = database.GetDataTable("dbo.RoutineNameByArea", parameters))
+                {
+                    foreach (DataRow dr in result.Rows)
+                    {
+                        ret.Add(dr["Name"].ToString());
+                    }
+                }
+            }
+
+            return ret;
+
+        }
+
         public static List<string> GetUsersByTeam(string TeamName)
         {
             List<string> ret = new List<string>();
@@ -64,6 +87,29 @@ namespace MvcApplication2.Models
                 parameters.Add(new SqlParameter("TeamName", SqlDbType.NVarChar) { Value = TeamName });
 
                 using (DataTable result = database.GetDataTable("dbo.UsersByTeamGet", parameters))
+                {
+                    foreach (DataRow dr in result.Rows)
+                    {
+                        ret.Add(dr["Name"].ToString());
+                    }
+                }
+            }
+
+            return ret;
+
+        }
+
+        public static List<string> RoutineNameByArea(string AreaName)
+        {
+            List<string> ret = new List<string>();
+
+            using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+
+                List<SqlParameter> parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("AreaName", SqlDbType.NVarChar) { Value = AreaName });
+
+                using (DataTable result = database.GetDataTable("dbo.RoutineNameByArea", parameters))
                 {
                     foreach (DataRow dr in result.Rows)
                     {

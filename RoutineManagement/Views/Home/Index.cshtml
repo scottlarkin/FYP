@@ -37,7 +37,6 @@
 
     <div class="popup">
 
-
         <p> Select Plant Area:</p>
         <select></select>
         <br />
@@ -51,7 +50,7 @@
         <br />
 
         <p> Select User</p>
-        <select></select>
+        <select ng-if ="schedule.Users.length > 0"></select>
         <br />
 
         <p>Enter Due Date</p>

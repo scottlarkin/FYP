@@ -38,27 +38,43 @@
     <div class="popup">
 
         <p> Select Plant Area:</p>
-        <select></select>
+        <select ng-options="name for name in Areas"
+                ng-model="SelectedArea"
+                ng-change="areaChanged(SelectedArea)"></select>
         <br />
 
-        <p> Select Routine</p>
-        <select></select>
+        <p> Select Routine: </p>
+        <select ng-if="SelectedArea != ''"
+                ng-options="name for name in Routines"
+                ng-model="SelectedRoutine"></select>
+
+        <p ng-if="SelectedArea == ''"> Must select an area first</p>
         <br />
 
-        <p> Select Team</p>
-        <select></select>
+        <p> Select Team: </p>
+        <select ng-if="SelectedArea != ''"
+                ng-options="name for name in Teams"
+                ng-model="SelectedTeam"
+                ng-change="getUsersByTeam(SelectedTeam)"></select>
+
+        <p ng-if="SelectedArea == ''"> Must select an area first</p>
         <br />
 
-        <p> Select User</p>
-        <select ng-if ="schedule.Users.length > 0"></select>
+        <p> Select User: </p>
+        <select ng-if="Teams.length > 0"
+            ng-options ="name for name in Users"
+            ng-model="SelectedUser">
+        </select>
+
+        <p ng-if="Teams.length < 1"> Must select a team first</p>
         <br />
 
-        <p>Enter Due Date</p>
+        <p>Enter Due Date: </p>
         <input type="date" />
         <br />
 
         <p>Occurs Every</p>
-        <input type="number" />
+        <input type="number" value="1" />
         <select>
             <option>Days</option>
             <option>Months</option>
@@ -67,7 +83,7 @@
         <br />
 
         <p>Number of occurances:</p>
-        <input type="number" />
+        <input type="number" value="1" />
 
         <br />
         <input type="button" value="Save" />

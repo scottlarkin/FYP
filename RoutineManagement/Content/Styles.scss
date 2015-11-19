@@ -238,6 +238,8 @@ $TextInputSelected_Colour: #0c60b1;
     @include border-radius(10px);
     @include centerer;
 
+    padding:10px;
+
     p{
         padding:0;
         margin:0;

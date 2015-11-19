@@ -18,9 +18,15 @@ RoutineManagement.controller("Schedule", function ($scope) {
 
     $scope.schedule = new document.ChecksheetLib.Schedule();
    
+    $scope.Areas = new Array();
     $scope.Routines = new Array();
     $scope.Teams = new Array();
-    $Scope.Users = new Array();
+    $scope.Users = new Array();
+
+    $scope.SelectedArea = "";
+    $scope.SelectedRoutine = "";
+    $scope.SelectedTeam = "";
+    $scope.SelectedUser = "";
 
     $.ajax({
         url: "http://localhost:57425/Home/GetAreas",
@@ -30,7 +36,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
 
         success: function (data) {
             $scope.$apply(function () {
-                $scope.areas = data;
+                $scope.Areas = data;
                 console.log(data);
             });
         },
@@ -47,11 +53,11 @@ RoutineManagement.controller("Schedule", function ($scope) {
             type: "GET",
             contentType: 'application/json;',
             dataType: 'json',
-            data: { AreaName: areaname },
+            data: { AreaName: areaName },
 
             success: function (data) {
                 $scope.$apply(function () {
-                    $scope.Teams = data;
+                    $scope.Routines = data;
                 });
             },
             fail: function (data) {
@@ -68,7 +74,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
             type: "GET",
             contentType: 'application/json;',
             dataType: 'json',
-            data: { AreaName: areaname },
+            data: { AreaName: areaName },
 
             success: function (data) {
                 $scope.$apply(function () {
@@ -93,7 +99,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
 
             success: function (data) {
                 $scope.$apply(function () {
-                    $scope.Teams = data;
+                    $scope.Users = data;
                 });
             },
             fail: function (data) {
@@ -103,6 +109,10 @@ RoutineManagement.controller("Schedule", function ($scope) {
         });
     }
 
+    $scope.areaChanged = function (areaName) {
+        $scope.getRoutinesByArea(areaName);
+        $scope.getTeamsByArea(areaName);
+    }
 
     //temp for testing!
     $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());

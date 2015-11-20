@@ -17,16 +17,27 @@ var RoutineManagement = angular.module("RoutineManagement", []);
 RoutineManagement.controller("Schedule", function ($scope) {
 
     $scope.schedule = new document.ChecksheetLib.Schedule();
-   
+
     $scope.Areas = new Array();
     $scope.Routines = new Array();
     $scope.Teams = new Array();
     $scope.Users = new Array();
 
-    $scope.SelectedArea = "";
-    $scope.SelectedRoutine = "";
-    $scope.SelectedTeam = "";
-    $scope.SelectedUser = "";
+    $scope.TimePeriod = ['Days', 'Months', 'Years'];
+
+    var resetSelections = function () {
+        $scope.SelectedArea = '';
+        $scope.SelectedRoutine = '';
+        $scope.SelectedTeam = '';
+        $scope.SelectedUser = '';
+        $scope.SelectedDate = '';
+        $scope.SelectedRate = 1;
+        $scope.SelectedPeriod = $scope.TimePeriod[0];
+        $scope.SelectedNumber = 1;
+        $scope.PopupHidden = true;
+    }
+
+    resetSelections();
 
     $.ajax({
         url: "http://localhost:57425/Home/GetAreas",
@@ -115,17 +126,80 @@ RoutineManagement.controller("Schedule", function ($scope) {
         $scope.getTeamsByArea(areaName);
     }
 
-    //temp for testing!
-    $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
-    $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
-    $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
-    $scope.schedule.ScheduledRoutines.push(new document.ChecksheetLib.ScheduledRoutine());
+    //for some reason the ng-model on routine select isnt working..?
+    //func below is a work around to force seletced routine to update
+    $scope.RoutineSelected = function (routine) {
+        $scope.SelectedRoutine = routine;
+    }
 
-    $scope.ScheduleRoutineClick = function () {
+    $scope.SaveScheduleClick = function () {
+
+        if ($scope.SelectedArea === '' || $scope.SelectedRoutine === '' || $scope.SelectedTeam === '' || $scope.SelectedDate === '') {
+            var missingSelections = '';
+
+            var addAnd = function (s) {
+
+                missingSelections += missingSelections !== '' ? ', and ' + s : s;
+            }
+
+            //build a string to tell user which required input fields are missing
+            if ($scope.SelectedArea === '') {
+                missingSelections += 'an Area';
+            }
+            if ($scope.SelectedRoutine === '') {
+                addAnd('a Routine');
+            }
+            if ($scope.SelectedTeam === '') {
+                addAnd('a Team');
+            }
+            if ($scope.SelectedDate === '') {
+                addAnd('a Date');
+            }
+
+            //TODO: 
+                //alert is a bit primitive... make my own popup dialog / find dsomething online. LOW PRIORITY
+            alert('Must select ' + missingSelections);
+
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:57425/Home/SaveScheduledRoutine",
+            type: "POST",
+            contentType: 'application/json;',
+            dataType: 'json',
+            data: {
+                Area: $scope.SelectedArea,
+                Routine: $scope.SelectedRoutine,
+                Team: $scope.SelectedTeam,
+                User: $scope.SelectedUser,
+                DateFor: $scope.SelectedDate,
+                Rate: $scope.SelectedRate,
+                Period: $scope.SelectedPeriod,
+                Number: $scope.SelectedNumber
+            },
+            success: function () {
+            },
+            fail: function () {
+                alert('Failed to schedule routine ');
+            }
+
+        });
+
+        resetSelections();
 
     }
 
-    $scope.RoutineCLick = function () {
+    $scope.ScheduleRoutineClick = function () {
+        $scope.PopupHidden = false;
+    }
+
+    $scope.CancelScheduleClick = function () {
+        $scope.PopupHidden = true;
+        resetSelections();
+    }
+
+    $scope.RoutineClick = function () {
 
     }
 
@@ -141,7 +215,7 @@ RoutineManagement.controller("CompleteRoutine", function ($scope) {
         type: "GET",
         contentType: 'application/json;',
         dataType: 'json',
-        data: {RoutineID: routineID},
+        data: { RoutineID: routineID },
 
         success: function (data) {
             $scope.$apply(function () {
@@ -216,8 +290,7 @@ RoutineManagement.controller("CreateRoutine", function ($scope) {
         routine.Checksheets.splice(ChecksheetIndex + Direction, 0, sheet);
     }
 
-    $scope.SaveRoutineClick = function()
-    {
+    $scope.SaveRoutineClick = function () {
         document.ChecksheetLib.SaveRoutine($scope.routine);
     }
 
@@ -235,5 +308,4 @@ function ValidateInput() {
 }
 
 $(document).on('keyup', '.js-input', ValidateInput);
-          
-    
+

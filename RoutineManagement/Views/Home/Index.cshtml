@@ -2,9 +2,8 @@
 
     <h2>Schedule</h2>
 
-    <input type="button" value="Schedule a Routine" />
+    <input type="button" value="Schedule a Routine" ng-click="ScheduleRoutineClick()"/>
 
-    <p>{{test}}</p>
     <h2 ng-if="schedule.ScheduledRoutines.length < 1">
         No Routines Scheduled
     </h2>
@@ -30,42 +29,37 @@
         </tr>
     </table>
 
-    <div class="overlay">
+    <div class="overlay" ng-hide="PopupHidden"></div>
 
-    </div>
-
-
-    <div class="popup">
+    <div class="popup" ng-hide="PopupHidden">
 
         <p> Select Plant Area:</p>
         <select ng-options="name for name in Areas"
                 ng-model="SelectedArea"
-                ng-change="areaChanged(SelectedArea)">
-        </select>
+                ng-change="areaChanged(SelectedArea)"></select>
 
         <br />
 
         <p> Select Routine: </p>
-        <select ng-if="SelectedArea != ''"
+        <select ng-if="SelectedArea !== ''"
+                ng-model="SelectedRoutine"
                 ng-options="name for name in Routines"
-                ng-model="SelectedRoutine">
-        </select>
+                ng-change="RoutineSelected(SelectedRoutine)"></select>
 
         <p ng-if="SelectedArea == ''"><span> Must select an area first</span></p>
         <br />
 
         <p> Select Team: </p>
-        <select ng-if="SelectedArea != ''"
+        <select ng-if="SelectedArea !== ''"
                 ng-options="name for name in Teams"
                 ng-model="SelectedTeam"
-                ng-change="getUsersByTeam(SelectedTeam)">
-        </select>
+                ng-change="getUsersByTeam(SelectedTeam)"></select>
 
         <p ng-if="SelectedArea == ''"><span> Must select an area first</span></p>
         <br />
 
         <p> Select User: </p>
-        <select ng-if="SelectedTeam != ''"
+        <select ng-if="SelectedTeam !== ''"
                 ng-options="name for name in Users"
                 ng-model="SelectedUser"></select>
 
@@ -73,24 +67,24 @@
         <br />
 
         <p>Enter Due Date: </p>
-        <input type="date" />
+        <input type="date" ng-model="SelectedDate" />
         <br />
 
         <p>Occurs Every</p>
-        <input type="number" value="1" />
-        <select>
-            <option>Days</option>
-            <option>Months</option>
-            <option>Years</option>
-        </select>
+        <input type="number" ng-model="SelectedRate" />
+
+        <select ng-options="name for name in TimePeriod"
+                ng-model="SelectedPeriod"></select>
         <br />
 
         <p>Number of occurances:</p>
-        <input type="number" value="1" />
+        <input type="number" ng-model="SelectedNumber" />
 
         <br />
-        <input type="button" value="Save" />
-        <input type="button" value="Cancel" />
+
+        <input type="button" value="Save" ng-click="SaveScheduleClick()" />
+        <input type="button" value="Cancel" ng-click="CancelScheduleClick()" />
+
     </div>
 
 

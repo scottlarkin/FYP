@@ -8,7 +8,6 @@ using System.Web.Configuration;
 namespace MvcApplication2.Models
 {
 
-
     public class ScheduleModel
     {
         public static List<string> GetAreas()
@@ -119,6 +118,12 @@ namespace MvcApplication2.Models
             }
 
             return ret;
+
+        }
+
+        public void ScheduleRoutine(string Routine, string Team, string User, string DateFor, int Rate, string Period, int Number)
+        {
+
 
         }
 

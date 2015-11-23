@@ -15,16 +15,14 @@ document.ChecksheetLib =
         this.ScheduledRoutines = new Array();
     },
 
-    ScheduledRoutine: function(){
-        this.ID = null;
-        this.CreatedOn = null;
-        this.CreatedBy = null;
+    ScheduledRoutine: function () {
+        this.Area = null;
         this.AssignedTeam = null;
         this.AssignedUser = null;
         this.DueOn = null;
         this.CompletedOn = null;
         this.CompletedBy = null;
-        this.RoutineID = null;
+        this.Routine = null;
     },
 
     AgendaRoutine: function (Name, Description, Area, ID) {

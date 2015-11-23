@@ -169,7 +169,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
             contentType: 'application/json;',
             dataType: 'json',
             data: {
-                Area: $scope.SelectedArea,
+                
                 Routine: $scope.SelectedRoutine,
                 Team: $scope.SelectedTeam,
                 User: $scope.SelectedUser,

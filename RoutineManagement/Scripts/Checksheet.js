@@ -4,7 +4,8 @@
 
 document.ChecksheetLib =
 {
- 
+    //ToDo:
+        //get this from DB.
     FieldTypes: [
             { id: '1', name: 'Text', htmlType: "text" },
             { id: '2', name: 'Checkbox', htmlType: "checkbox" },

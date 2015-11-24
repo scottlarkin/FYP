@@ -74,7 +74,12 @@ namespace RoutineManagement.Controllers
 
         public string LoadSchedule()
         {
-            return "";
+
+            ScheduleModel schedule = new ScheduleModel();
+
+            schedule.LoadSchedule();
+
+            return new JavaScriptSerializer().Serialize(Json(schedule).Data);
         }
 
         public void ScheduleRoutine()

@@ -16,7 +16,23 @@ var RoutineManagement = angular.module("RoutineManagement", []);
 
 RoutineManagement.controller("Schedule", function ($scope) {
 
-    $scope.schedule = new document.ChecksheetLib.Schedule();
+    $.ajax({
+        url: "http://localhost:57425/Home/LoadSchedule",
+        type: "GET",
+        contentType: 'application/json;',
+        dataType: 'json',
+
+        success: function (data) {
+            $scope.$apply(function () {
+                $scope.schedule = data;
+            });
+        },
+        fail: function (data) {
+            console.log('failed to load schedule: ');
+        }
+
+    });
+
 
     $scope.Areas = new Array();
     $scope.Routines = new Array();
@@ -24,6 +40,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
     $scope.Users = new Array();
 
     $scope.TimePeriod = ['Days', 'Months', 'Years'];
+    $scope.PopupHidden = true;
 
     var resetSelections = function () {
         $scope.SelectedArea = '';

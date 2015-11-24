@@ -10,6 +10,61 @@ namespace MvcApplication2.Models
 
     public class ScheduleModel
     {
+        public class ScheduledRoutine
+        {
+            public ScheduledRoutine() { }
+
+            public ScheduledRoutine(string a, string at, string au, string d, string co, string cb, string r) 
+            {
+                Area = a;
+                AssignedTeam = at;
+                AssignedUser = au;
+                DueOn = d;
+                CompletedOn = co;
+                CompletedBy = cb;
+                Routine = r;
+            }
+
+            public string Area;
+            public string AssignedTeam;
+            public string AssignedUser;
+            public string DueOn;
+            public string CompletedOn;
+            public string CompletedBy;
+            public string Routine;
+        };
+
+        public List<ScheduledRoutine> ScheduledRoutines { get; set; }
+
+        public ScheduleModel()
+        {
+            ScheduledRoutines = new List<ScheduledRoutine>();
+        }
+
+        public void LoadSchedule()
+        {
+            using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                using(DataTable result = database.GetDataTable("dbo.ScheduleGet", new List<SqlParameter>()))
+                {
+
+                    foreach(DataRow dr in result.Rows)
+                    {
+
+                        ScheduledRoutines.Add(new ScheduledRoutine(
+                                dr["Area"].ToString(),
+                                dr["AssignedTeam"].ToString(),
+                                dr["AssignedUser"].ToString(),
+                                dr["DueOn"].ToString(),
+                                dr["CompletedOn"].ToString(),
+                                dr["CompletedBy"].ToString(),
+                                dr["Routine"].ToString()
+                            ));
+                    }
+                }
+            }
+        }
+
         public static List<string> GetAreas()
         {
             List<string> ret = new List<string>();

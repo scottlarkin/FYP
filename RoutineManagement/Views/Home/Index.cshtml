@@ -19,8 +19,8 @@
             <td>Completed By</td>
         </tr>
         <tr class="checksheetTable--row" ng-repeat="Row in schedule.ScheduledRoutines">
-            <td>Routine name!</td>
-            <td>Area</td>
+            <td>{{Row.Routine}}</td>
+            <td>{{Row.Area}}</td>
             <td>{{Row.AssignedTeam}}</td>
             <td>{{Row.AssignedUser}}</td>
             <td>{{Row.DueOn}}</td>

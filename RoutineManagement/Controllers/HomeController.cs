@@ -24,6 +24,7 @@ namespace RoutineManagement.Controllers
 
         public ActionResult Builder(int? routineID = null)
         {
+            routineID = routineID ?? 0;
             ViewBag.Title = "Routine Builder";
             ViewBag.RoutineID = routineID;
 

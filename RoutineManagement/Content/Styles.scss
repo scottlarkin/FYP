@@ -1,13 +1,12 @@
 ﻿/* MIXINS*/
 
 @mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-     -moz-border-radius: $radius;
-          border-radius: $radius;
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
 }
 
-@mixin border-opacity($r, $g, $b, $o)
-{
+@mixin border-opacity($r, $g, $b, $o) {
     border: 1px solid rgb($r*$o, $g*$o, $b*$o);
     border: 1px solid rgba($r, $g, $b, $o);
     -webkit-background-clip: padding-box; /* for Safari */
@@ -15,94 +14,126 @@
 }
 
 @mixin box-sizing($box-model) {
-  -webkit-box-sizing: $box-model; // Safari <= 5
-     -moz-box-sizing: $box-model; // Firefox <= 19
-          box-sizing: $box-model;
+    -webkit-box-sizing: $box-model; // Safari <= 5
+    -moz-box-sizing: $box-model; // Firefox <= 19
+    box-sizing: $box-model;
 }
 
 @mixin centerer($horizontal: true, $vertical: true) {
-  position: absolute;
-  @if ($horizontal and $vertical) {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  } @else if ($horizontal) {
-    left: 50%;
-    transform: translate(-50%, 0);
-  } @else if ($vertical) {
-    top: 50%;
-    transform: translate(0, -50%);
-  }
+    position: absolute;
+
+    @if ($horizontal and $vertical) {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    @else if ($horizontal) {
+        left: 50%;
+        transform: translate(-50%, 0);
+    }
+    @else if ($vertical) {
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+}
+
+@mixin transform($transforms) {
+    -moz-transform: $transforms;
+    -o-transform: $transforms;
+    -ms-transform: $transforms;
+    -webkit-transform: $transforms;
+    transform: $transforms;
+}
+
+@mixin translate ($x, $y) {
+    @include transform(translate($x, $y));
+}
+
+@mixin transform-origin ($origin) {
+    moz-transform-origin: $origin;
+    -o-transform-origin: $origin;
+    -ms-transform-origin: $origin;
+    -webkit-transform-origin: $origin;
+    transform-origin: $origin;
+}
+
+@mixin transform-style($val) {
+    -webkit-transform-style: $val;
+    -moz-transform-style: $val;
+    -ms-transform-style: $val;
+    transform-style: $val;
 }
 
 @function calculateRem($size) {
-  $remSize: $size / 16px;
-  @return $remSize * 1rem;
+    $remSize: $size / 16px;
+    @return $remSize * 1rem;
 }
 
 @mixin font-size($size) {
-  font-size: $size;
-  font-size: calculateRem($size);
+    font-size: $size;
+    font-size: calculateRem($size);
 }
 
-@mixin keyframes($animation-name) {
-  @-webkit-keyframes $animation-name {
-    @content;
-  }
-  @-moz-keyframes $animation-name {
-    @content;
-  }  
-  @-ms-keyframes $animation-name {
-    @content;
-  }
-  @-o-keyframes $animation-name {
-    @content;
-  }  
-  @keyframes $animation-name {
-    @content;
-  }
+@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+
+    @-ms-keyframes #{$name} {
+        @content;
+    }
+
+    @keyframes #{$name} {
+        @content;
+    }
 }
 
 @mixin animation($str) {
-  -webkit-animation: #{$str};
-  -moz-animation: #{$str};
-  -o-animation: #{$str};
-  animation: #{$str};      
+    -webkit-animation: #{$str};
+    -moz-animation: #{$str};
+    -o-animation: #{$str};
+    animation: #{$str};
 }
 
 @mixin transition($args...) {
-  -webkit-transition: $args;
-  -moz-transition: $args;
-  -o-transition: $args;
-  transition: $args;
+    -webkit-transition: $args;
+    -moz-transition: $args;
+    -o-transition: $args;
+    transition: $args;
 }
 
 @mixin opacity($opacity) {
-  opacity: $opacity;
-  $opacity-ie: $opacity * 100;
-  filter: alpha(opacity=$opacity-ie); //IE8
+    opacity: $opacity;
+    $opacity-ie: $opacity * 100;
+    filter: alpha(opacity=$opacity-ie); //IE8
 }
 
 %clearfix {
-  *zoom: 1;
-  &:before, &:after {
-    content: " ";
-    display: table;
-  }
-  &:after {
-    clear: both;
-  }
+    *zoom: 1;
+
+    &:before, &:after {
+        content: " ";
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
 }
 
 %visuallyhidden {
-  margin: -1px;
-  padding: 0;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip: rect(0, 0, 0, 0);
-  position: absolute;
+    margin: -1px;
+    padding: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip: rect(0, 0, 0, 0);
+    position: absolute;
 }
 
 /* END MIXINS*/
@@ -122,43 +153,40 @@ $TextInputSelected_Colour: #0c60b1;
 
 
 .body {
-   background-color:$Background_Colour;
-   @include box-sizing(border-box);
+    background-color: $Background_Colour;
+    @include box-sizing(border-box);
 }
 
 
-.checksheetTable{
-    
-    font-weight:bold;
+.checksheetTable {
+    font-weight: bold;
 }
 
 
-.checksheetTable--row{
-    color:#FFFFFF;
-    height:40px;
-    padding-right:10px;
+.checksheetTable--row {
+    color: #FFFFFF;
+    height: 40px;
+    padding-right: 10px;
 }
 
-.checksheetTable--row:nth-child(even){
-    
-    background-color:$ChecksheetRowLight_Colour;
+.checksheetTable--row:nth-child(even) {
+    background-color: $ChecksheetRowLight_Colour;
 }
 
-.checksheetTable--row:nth-child(odd){
-    background-color:$ChecksheetRowDark_Colour;
+.checksheetTable--row:nth-child(odd) {
+    background-color: $ChecksheetRowDark_Colour;
 }
 
 
 .checksheetTable--row:first-child {
-    background-color:$ChecksheetTitle_Colour;
+    background-color: $ChecksheetTitle_Colour;
 }
 
-.checksheetTable--row input
-{
-    color:#FFFFFF;
+.checksheetTable--row input {
+    color: #FFFFFF;
 }
 
-.textInput{
+.textInput {
     @include border-opacity(255,255,255,0.2);
 }
 
@@ -174,90 +202,144 @@ $TextInputSelected_Colour: #0c60b1;
     @extend .checksheetTable--row:first-child;
 }
 
-.checksheetTable--fieldInput{
+.checksheetTable--fieldInput {
     @include border-opacity(255,255,255,0.2);
-    width:120px;
-    height:90%;
-    padding-left:2px;
+    width: 120px;
+    height: 90%;
+    padding-left: 2px;
 }
 
-.checksheetTable--fieldInput:focus{
+.checksheetTable--fieldInput:focus {
     @extend .checksheetTable--fieldInput;
-    border:2px solid $TextInputSelected_Colour;
+    border: 2px solid $TextInputSelected_Colour;
 }
 
-.checksheetTable--fieldInput--error{
+.checksheetTable--fieldInput--error {
     @extend .checksheetTable--fieldInput;
-    border:2px solid $TextInputError_Colour !important;
+    border: 2px solid $TextInputError_Colour !important;
 }
 
-.checksheetTable--fieldInput:focus .checksheetTable--fieldInput--error:focus{
+.checksheetTable--fieldInput:focus .checksheetTable--fieldInput--error:focus {
     @extend .checksheetTable--fieldInput;
-    border:2px solid $TextInputError_Colour !important;
+    border: 2px solid $TextInputError_Colour !important;
 }
 
 
-.checksheetTable--deleteButton{
-    background-color:white  !important;
-    color:black             !important;
-    font-weight:bolder        !important;
-    border:none               !important;
-    float:left                !important;
-    margin-left:3px           !important;
-    margin-right:2px          !important;
+.checksheetTable--deleteButton {
+    background-color: white !important;
+    color: black !important;
+    font-weight: bolder !important;
+    border: none !important;
+    float: left !important;
+    margin-left: 3px !important;
+    margin-right: 2px !important;
 }
 
 
-.checksheetTable--fieldTitle--Dropdown{
-    float:left;
-    padding-right:4px;
-    width:80px;
+.checksheetTable--fieldTitle--Dropdown {
+    float: left;
+    padding-right: 4px;
+    width: 80px;
 }
 
-.checksheetTable--cell{
-
-
+.checksheetTable--cell {
 }
 
-.overlay{
-    position:fixed;
-    top:0;
-    left:0;
-    background-color:rgb(0,0,0);
-    width:100%;
-    height:100%;
-    z-index:10000;
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgb(0,0,0);
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
     @include opacity(0.98);
 }
 
-.popup{
-    background-color:rgb(255,255,255);
-    width:auto;
-    height:auto;
-    z-index:10001;
+.popup {
+    background-color: rgb(255,255,255);
+    width: auto;
+    height: auto;
+    z-index: 10001;
     @include border-radius(10px);
     @include centerer;
+    padding: 10px;
 
-    padding:10px;
-
-    p{
-        padding:0;
-        margin:0;
-        float:left;
+    p {
+        padding: 0;
+        margin: 0;
+        float: left;
     }
 
-    select{
-        float:left;
-        height:20px;
+    select {
+        float: left;
+        height: 20px;
     }
 
-    input{
-        height:20px;
-        float:left;
-        width:120px;
+    input {
+        height: 20px;
+        float: left;
+        width: 120px;
     }
 
-    span{
-        color:$TextInputError_Colour;
+    span {
+        color: $TextInputError_Colour;
+    }
+}
+
+
+/* loading spinner */
+.spinner-wrap {
+    height: 300px;
+    margin-top: 50px;
+    position: fixed;
+    z-index: 9999999;
+    left:0;
+    top:0;
+
+    @include keyframes (spin) {
+        from {
+            @include transform(rotateY(0));
+        }
+
+        to {
+            @include transform(rotateY(360deg));
+        }
+    }
+
+    .cube {
+        position: relative;
+        margin: 0 auto;
+        width: 200px;
+        @include transform-style(preserve-3d);
+        @include animation(spin 5s infinite linear);
+    }
+
+    i {
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        width: 100px;
+        height: 100px;
+        display: block;
+        background: url("Images/CheckList.png");
+    }
+
+    i.front {
+        @include transform (translateZ(50px));
+    }
+
+    i.back {
+        @include transform(translateZ(-50px) rotateY(180deg));
+    }
+
+    i.left {
+        @include transform(rotateY(270deg) translateX(-50px));
+        @include transform-origin(center left);
+    }
+
+    i.right {
+        @include transform(rotateY(-270deg) translateX(50px));
+        @include transform-origin(top right);
     }
 }

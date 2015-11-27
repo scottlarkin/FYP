@@ -16,30 +16,33 @@ var RoutineManagement = angular.module("RoutineManagement", []);
 
 RoutineManagement.controller("Schedule", function ($scope) {
 
-    $.ajax({
-        url: "http://localhost:57425/Home/LoadSchedule",
-        type: "GET",
-        contentType: 'application/json;',
-        dataType: 'json',
+    var refreshSchedule = function () {
+        $.ajax({
+            url: "http://localhost:57425/Home/LoadSchedule",
+            type: "GET",
+            contentType: 'application/json;',
+            dataType: 'json',
 
-        success: function (data) {
-            $scope.$apply(function () {
-                $scope.schedule = data;
-            });
-        },
-        fail: function (data) {
-            console.log('failed to load schedule: ');
-        }
+            success: function (data) {
+                $scope.$apply(function () {
+                    $scope.schedule = data;
+                });
+            },
+            fail: function (data) {
+                console.log('failed to load schedule: ');
+            }
 
-    });
+        });
+    }
 
+    refreshSchedule();
 
     $scope.Areas = new Array();
     $scope.Routines = new Array();
     $scope.Teams = new Array();
     $scope.Users = new Array();
 
-    $scope.TimePeriod = ['Days', 'Months', 'Years'];
+    $scope.TimePeriod = ['Days', 'Weeks', 'Months', 'Years'];
     $scope.PopupHidden = true;
 
     var resetSelections = function () {
@@ -65,6 +68,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
         success: function (data) {
             $scope.$apply(function () {
                 $scope.Areas = data;
+                console.log(data);
             });
         },
         fail: function (data) {
@@ -143,10 +147,14 @@ RoutineManagement.controller("Schedule", function ($scope) {
         $scope.getTeamsByArea(areaName);
     }
 
-    //for some reason the ng-model on routine select isnt working..?
-    //func below is a work around to force seletced routine to update
+    //for some reason the ng-model on routine select / user select isnt working..?
+    //funcs below is a work around to force seletced routine to update
     $scope.RoutineSelected = function (routine) {
         $scope.SelectedRoutine = routine;
+    }
+
+    $scope.userChanged = function (user) {
+        $scope.SelectedUser = user;
     }
 
     $scope.SaveScheduleClick = function () {
@@ -174,27 +182,28 @@ RoutineManagement.controller("Schedule", function ($scope) {
             }
 
             //TODO: 
-                //alert is a bit primitive... make my own popup dialog / find dsomething online. LOW PRIORITY
+            //alert is a bit primitive... make my own popup dialog / find dsomething online. LOW PRIORITY
             alert('Must select ' + missingSelections);
 
             return;
         }
 
+        var sr = new document.ChecksheetLib.ScheduledRoutine();
+        sr.AssignedUser = $scope.SelectedUser;
+        sr.AssignedTeam = $scope.SelectedTeam;
+        sr.DueOn = $scope.SelectedDate;
+        sr.Routine = $scope.SelectedRoutine;
+        sr.Rate = $scope.SelectedRate;
+        sr.Period = $scope.SelectedPeriod;
+        sr.Number = $scope.SelectedNumber;
+        
         $.ajax({
-            url: "http://localhost:57425/Home/SaveScheduledRoutine",
+            url: "http://localhost:57425/Home/ScheduleRoutine",
             type: "POST",
             contentType: 'application/json;',
             dataType: 'json',
-            data: {
-                
-                Routine: $scope.SelectedRoutine,
-                Team: $scope.SelectedTeam,
-                User: $scope.SelectedUser,
-                DateFor: $scope.SelectedDate,
-                Rate: $scope.SelectedRate,
-                Period: $scope.SelectedPeriod,
-                Number: $scope.SelectedNumber
-            },
+            data: JSON.stringify(sr),
+
             success: function () {
             },
             fail: function () {
@@ -205,6 +214,8 @@ RoutineManagement.controller("Schedule", function ($scope) {
 
         resetSelections();
 
+        refreshSchedule();
+
     }
 
     $scope.ScheduleRoutineClick = function () {
@@ -212,6 +223,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
     }
 
     $scope.CancelScheduleClick = function () {
+        console.log("testing");
         $scope.PopupHidden = true;
         resetSelections();
     }

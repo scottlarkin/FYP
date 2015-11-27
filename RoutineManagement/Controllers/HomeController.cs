@@ -82,9 +82,9 @@ namespace RoutineManagement.Controllers
             return new JavaScriptSerializer().Serialize(Json(schedule).Data);
         }
 
-        public void ScheduleRoutine()
+        public void ScheduleRoutine(ScheduledRoutine SR)
         {
-
+            SR.SaveScheduledRoutine();
         }
 
         public string LoadComments()

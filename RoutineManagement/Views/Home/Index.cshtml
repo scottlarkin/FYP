@@ -2,7 +2,7 @@
 
     <h2>Schedule</h2>
 
-    <input type="button" value="Schedule a Routine" ng-click="ScheduleRoutineClick()"/>
+    <input type="button" value="Schedule a Routine" ng-click="ScheduleRoutineClick()" />
 
     <h2 ng-if="schedule.ScheduledRoutines.length < 1">
         No Routines Scheduled
@@ -61,7 +61,8 @@
         <p> Select User: </p>
         <select ng-if="SelectedTeam !== ''"
                 ng-options="name for name in Users"
-                ng-model="SelectedUser"></select>
+                ng-model="SelectedUser"
+                ng-change="userChanged(SelectedUser)"></select>
 
         <p ng-if="SelectedTeam == ''"> <span>Must select a team first</span></p>
         <br />

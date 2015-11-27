@@ -16,14 +16,16 @@ document.ChecksheetLib =
         this.ScheduledRoutines = new Array();
     },
 
-    ScheduledRoutine: function () {
-        this.Area = null;
-        this.AssignedTeam = null;
-        this.AssignedUser = null;
-        this.DueOn = null;
-        this.CompletedOn = null;
-        this.CompletedBy = null;
-        this.Routine = null;
+    ScheduledRoutine: function (au, at, d, co, cb, r, rate, period, number  ) {
+        this.AssignedUser = au;
+        this.AssignedTeam = at;
+        this.DueOn = d;
+        this.CompletedOn = co;
+        this.CompletedBy = cb;
+        this.Routine = r;
+        this.Rate = rate || 1;
+        this.Period = period || 'Days';
+        this.Number = number || 1;
     },
 
     AgendaRoutine: function (Name, Description, Area, ID) {
@@ -60,13 +62,6 @@ document.ChecksheetLib =
     FieldValue: function (Value, Editable) {
         this.Value = Value;
         this.Editable = Editable;
-    },
-
-    ScheduledRoutine: function(){
-        this.RoutineName = '';
-        this.CreatedBy = '';
-        this.DueDate = '';
-        this.CompletedBy = '';
     },
 
     AddRecordToChecksheet: function (Checksheet, Record) {

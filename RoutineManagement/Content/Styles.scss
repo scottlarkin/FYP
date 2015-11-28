@@ -145,6 +145,7 @@ $ChecksheetTitle_Colour: #222222;
 $ChecksheetRowDark_Colour: #303030;
 $ChecksheetRowLight_Colour: #4f4f4f;
 $Background_Colour: #808080;
+$highlight_Colour: #1a1a1a;
 
 $TextInputError_Colour: #ba0808;
 $TextInputSelected_Colour: #0c60b1;
@@ -177,13 +178,54 @@ $TextInputSelected_Colour: #0c60b1;
     background-color: $ChecksheetRowDark_Colour;
 }
 
-
 .checksheetTable--row:first-child {
     background-color: $ChecksheetTitle_Colour;
 }
 
 .checksheetTable--row input {
     color: #FFFFFF;
+}
+
+.scheduleTable {
+}
+
+.scheduleTable--row {
+    @extend .checksheetTable--row;
+}
+
+.scheduleTable--row:nth-child(even) {
+    @extend .checksheetTable--row:nth-child(even);
+}
+
+.scheduleTable--row:nth-child(odd) {
+    @extend .checksheetTable--row:nth-child(odd);
+}
+
+.scheduleTable--row:first-child {
+    font-weight: bold;
+    @extend .checksheetTable--row:first-child;
+}
+
+.scheduleTable--cell {
+    padding: 6px;
+}
+
+.scheduleTable--titleCell {
+    cursor: pointer;
+    @extend .scheduleTable--cell;
+}
+
+.scheduleTable--row:hover:not(:first-child) {
+    background-color: $highlight_Colour;
+    cursor: pointer;
+}
+
+.sortorder:after {
+    content: '\25b2';
+}
+
+.sortorder.reverse:after {
+    content: '\25bc';
 }
 
 .textInput {
@@ -294,8 +336,8 @@ $TextInputSelected_Colour: #0c60b1;
     margin-top: 50px;
     position: fixed;
     z-index: 9999999;
-    left:0;
-    top:0;
+    left: 0;
+    top: 0;
 
     @include keyframes (spin) {
         from {

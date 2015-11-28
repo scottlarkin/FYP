@@ -8,24 +8,45 @@
         No Routines Scheduled
     </h2>
 
-    <table class="checksheetTable" ng-if="schedule.ScheduledRoutines.length > 0">
-        <tr class="checksheetTable--row">
-            <td>Routine name</td>
-            <td>Area</td>
-            <td>Assigned Team</td>
-            <td>Assigned User</td>
-            <td>Due Date</td>
-            <td>Completed On</td>
-            <td>Completed By</td>
+    <table class="scheduleTable" ng-if="schedule.ScheduledRoutines.length > 0">
+        <tr class="scheduleTable--row">
+            <td class="scheduleTable--titleCell" ng-click="order('Routine')">
+                Routine Name
+                <span class="sortorder" ng-show="predicate === 'Routine'" ng-class="{reverse:reverse}"></span>
+            </td>
+            <td class="scheduleTable--titleCell" ng-click="order('Area')">
+                Area
+                <span class="sortorder" ng-show="predicate === 'Area'" ng-class="{reverse:reverse}"></span>
+            </td>
+            <td class="scheduleTable--titleCell" ng-click="order('AssignedTeam')">
+                Assigned Team
+                <span class="sortorder" ng-show="predicate === 'AssignedTeam'" ng-class="{reverse:reverse}"></span>
+            </td>
+            <td class="scheduleTable--titleCell" ng-click="order('AssignedUser')">
+                Assigned User
+                <span class="sortorder" ng-show="predicate === 'AssignedUser'" ng-class="{reverse:reverse}"></span>
+            </td>
+            <td class="scheduleTable--titleCell" ng-click="order('DueOn')">
+                Due Date
+                <span class="sortorder" ng-show="predicate === 'DueOn'" ng-class="{reverse:reverse}"></span>
+            </td>
+            <td class="scheduleTable--titleCell" ng-click="order('CompletedOn')">
+                Completed On
+                <span class="sortorder" ng-show="predicate === 'CompletedOn'" ng-class="{reverse:reverse}"></span>
+            </td>
+            <td class="scheduleTable--titleCell" ng-click="order('Completedby')">
+                Completed By
+                <span class="sortorder" ng-show="predicate === 'Completedby'" ng-class="{reverse:reverse}"></span>
+            </td>
         </tr>
-        <tr class="checksheetTable--row" ng-repeat="Row in schedule.ScheduledRoutines">
-            <td>{{Row.Routine}}</td>
-            <td>{{Row.Area}}</td>
-            <td>{{Row.AssignedTeam}}</td>
-            <td>{{Row.AssignedUser}}</td>
-            <td>{{Row.DueOn}}</td>
-            <td>{{Row.CompletedOn}}</td>
-            <td>{{Row.Completedby}}</td>
+        <tr class="scheduleTable--row" ng-repeat="Row in schedule.ScheduledRoutines | orderBy:predicate:reverse" ng-click="RoutineClick(42)">
+            <td class="scheduleTable--cell">{{Row.Routine}}</td>
+            <td class="scheduleTable--cell">{{Row.Area}}</td>
+            <td class="scheduleTable--cell">{{Row.AssignedTeam}}</td>
+            <td class="scheduleTable--cell">{{Row.AssignedUser}}</td>
+            <td class="scheduleTable--cell">{{Row.DueOn}}</td>
+            <td class="scheduleTable--cell">{{Row.CompletedOn}}</td>
+            <td class="scheduleTable--cell">{{Row.Completedby}}</td>
         </tr>
     </table>
 

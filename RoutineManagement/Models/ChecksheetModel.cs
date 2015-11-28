@@ -12,8 +12,9 @@ namespace MvcApplication2.Models
     {
         public ScheduledRoutine() { }
 
-        public ScheduledRoutine(string a, string at, string au, string d, string co, string cb, string r, int? rate = null, string period = null, int? number = null)
+        public ScheduledRoutine(string rid, string a, string at, string au, string d, string co, string cb, string r, int? rate = null, string period = null, int? number = null)
         {
+            RoutineID = int.Parse(rid);
             Area = a;
             AssignedTeam = at;
             AssignedUser = au;
@@ -43,8 +44,9 @@ namespace MvcApplication2.Models
             }
         }
 
-        public string Area {get;set;}
-        public string AssignedTeam {get;set;}
+        public int RoutineID { get; set; }
+        public string Area { get; set; }
+        public string AssignedTeam { get; set; }
         public string AssignedUser { get; set; }
         public string DueOn { get; set; }
         public string CompletedOn { get; set; }
@@ -69,13 +71,14 @@ namespace MvcApplication2.Models
         {
             using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
             {
-                using(DataTable result = database.GetDataTable("dbo.ScheduleGet", new List<SqlParameter>()))
+                using (DataTable result = database.GetDataTable("dbo.ScheduleGet", new List<SqlParameter>()))
                 {
 
-                    foreach(DataRow dr in result.Rows)
+                    foreach (DataRow dr in result.Rows)
                     {
 
                         ScheduledRoutines.Add(new ScheduledRoutine(
+                                dr["RoutineID"].ToString(),
                                 dr["Area"].ToString(),
                                 dr["AssignedTeam"].ToString(),
                                 dr["AssignedUser"].ToString(),
@@ -89,15 +92,15 @@ namespace MvcApplication2.Models
             }
         }
 
-        
+
 
         public static List<string> GetAreas()
         {
             List<string> ret = new List<string>();
-            
+
             using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
             {
-                using(DataTable result = database.GetDataTable("dbo.AreaGet", new List<SqlParameter>()))
+                using (DataTable result = database.GetDataTable("dbo.AreaGet", new List<SqlParameter>()))
                 {
                     foreach (DataRow dr in result.Rows)
                     {
@@ -149,7 +152,7 @@ namespace MvcApplication2.Models
                     {
                         ret.Add(dr["Name"].ToString());
                     }
-                } 
+                }
             }
 
             return ret;

@@ -37,6 +37,13 @@ RoutineManagement.controller("Schedule", function ($scope) {
 
     refreshSchedule();
 
+    $scope.predicate = 'DueOn';
+    $scope.reverse = false;
+    $scope.order = function (predicate) {
+        $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+        $scope.predicate = predicate;
+    };
+
     $scope.Areas = new Array();
     $scope.Routines = new Array();
     $scope.Teams = new Array();
@@ -228,8 +235,19 @@ RoutineManagement.controller("Schedule", function ($scope) {
         resetSelections();
     }
 
-    $scope.RoutineClick = function () {
+    $scope.RoutineClick = function (routineID) {
 
+        console.log(window.location.href);
+
+        $.ajax({
+            url: 'Home/Routine',
+            type: "GET",
+            dataType: 'json',
+            data: {
+                RoutineID: routineID
+            },
+
+        });
     }
 
 });

@@ -220,6 +220,31 @@ namespace MvcApplication2.Models
         public string Description { get; set; }
         public List<ChecksheetModel> Checksheets { get; set; }
 
+        public static List<FieldType> GetFieldTypes()
+        {
+            using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                using (DataTable dt = database.GetDataTable("dbo.TypeGet", new List<SqlParameter>()))
+                {
+                    List<FieldType> types = new List<FieldType>();
+
+                    FieldType ft;
+
+                    foreach(DataRow row in dt.Rows)
+                    {
+                        ft = new FieldType();
+
+                        ft.ID = int.Parse(row["ID"].ToString());
+                        ft.Name = row["Name"].ToString();
+                        ft.HtmlType = row["HTMLType"].ToString();
+
+                        types.Add(ft);
+                    }
+
+                    return types;
+                }
+            }
+        }
 
         public AgendaRoutineModel()
         {
@@ -288,6 +313,18 @@ namespace MvcApplication2.Models
                         Checksheets.Add(checksheet);
                     }
                 }
+            }
+        }
+
+
+        public static string ValidateRoutineName(string routinename, string area)
+        {
+            using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                List<SqlParameter> parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("RoutineName", SqlDbType.NVarChar) { Value = routinename.Replace("'", "''") });
+                parameters.Add(new SqlParameter("Area", SqlDbType.NVarChar) { Value = area.Replace("'", "''") });
+                return database.GetValue("dbo.ValidateRoutineName", parameters);
             }
         }
 
@@ -409,6 +446,13 @@ namespace MvcApplication2.Models
     {
         public string Value { get; set; }
         public bool Editable { get; set; }
+    };
+
+    public class FieldType
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string HtmlType { get; set; }
     };
 
     public class ChecksheetModel

@@ -9,3 +9,8 @@ C:\Users\m2100705\FYP\DataAccess\bin\Debug\DataAccess.pdb
 C:\Users\m2100705\FYP\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache
 C:\Users\m2100705\FYP\DataAccess\obj\Debug\DataAccess.dll
 C:\Users\m2100705\FYP\DataAccess\obj\Debug\DataAccess.pdb
+E:\GitHub\FYP\DataAccess\bin\Debug\DataAccess.dll
+E:\GitHub\FYP\DataAccess\bin\Debug\DataAccess.pdb
+E:\GitHub\FYP\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache
+E:\GitHub\FYP\DataAccess\obj\Debug\DataAccess.dll
+E:\GitHub\FYP\DataAccess\obj\Debug\DataAccess.pdb

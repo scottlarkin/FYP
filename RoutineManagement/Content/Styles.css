@@ -61,8 +61,8 @@
 }
 
 .textInput {
-  border: 1px solid #333333;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   -webkit-background-clip: padding-box;
   /* for Safari */
   background-clip: padding-box;

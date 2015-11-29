@@ -66,23 +66,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
 
     resetSelections();
 
-    $.ajax({
-        url: "http://localhost:57425/Home/GetAreas",
-        type: "GET",
-        contentType: 'application/json;',
-        dataType: 'json',
-
-        success: function (data) {
-            $scope.$apply(function () {
-                $scope.Areas = data;
-                console.log(data);
-            });
-        },
-        fail: function (data) {
-            console.log('failed to lget areas: ');
-        }
-
-    });
+    $scope.Areas = document.ChecksheetLib.PlantAreas;
 
     $scope.getRoutinesByArea = function (areaName) {
 
@@ -226,28 +210,19 @@ RoutineManagement.controller("Schedule", function ($scope) {
     }
 
     $scope.ScheduleRoutineClick = function () {
+        if ($scope.Areas === null) {
+            $scope.Areas = document.ChecksheetLib.PlantAreas;
+        }
         $scope.PopupHidden = false;
     }
 
     $scope.CancelScheduleClick = function () {
-        console.log("testing");
         $scope.PopupHidden = true;
         resetSelections();
     }
 
     $scope.RoutineClick = function (routineID) {
-
-        console.log(window.location.href);
-
-        $.ajax({
-            url: 'Home/Routine',
-            type: "GET",
-            dataType: 'json',
-            data: {
-                RoutineID: routineID
-            },
-
-        });
+        window.location.href = 'Home/Routine?routineID=' + routineID;
     }
 
 });
@@ -280,10 +255,14 @@ RoutineManagement.controller("CompleteRoutine", function ($scope) {
 
 //contsins functionality for creating or editing routines
 RoutineManagement.controller("CreateRoutine", function ($scope) {
-    $scope.routine = new document.ChecksheetLib.AgendaRoutine("test name", "test description");
+
+    $scope.routine = new document.ChecksheetLib.AgendaRoutine("New Routine", "Routine description");
     $scope.routine.Checksheets.push(new document.ChecksheetLib.CreateEmptyChecksheet());
 
     $scope.fieldTypes = document.ChecksheetLib.FieldTypes;
+    $scope.areas = document.ChecksheetLib.PlantAreas;
+    $scope.SelectedArea = null;
+
 
     $scope.AddChecksheetClick = function () {
         $scope.routine.Checksheets.push(new document.ChecksheetLib.CreateEmptyChecksheet());
@@ -338,7 +317,38 @@ RoutineManagement.controller("CreateRoutine", function ($scope) {
     }
 
     $scope.SaveRoutineClick = function () {
+
+        var errors = $('.checksheetTable--fieldInput--error');
+        console.log(errors);
+        if (errors.length > 0) {
+            alert("Must resolve errors before saving");
+            return;
+        }
+
         document.ChecksheetLib.SaveRoutine($scope.routine);
+    }
+
+    $scope.ValidateRoutineName = function (rn, a) {
+
+        $.ajax({
+            url: "http://localhost:57425/Home/ValidateRoutineName",
+            type: "GET",
+            dataType: 'text',
+            contentType: 'json',
+            data: {
+                routineName: rn,
+                area: a
+            },
+            success: function (data) {
+
+                if (data === 'Error') {
+                    $('#RoutineNameInput').addClass('checksheetTable--fieldInput--error');
+                } else {
+                    $('#RoutineNameInput').removeClass('checksheetTable--fieldInput--error');
+                }
+            }
+
+        });
     }
 
 });

@@ -96,5 +96,17 @@ namespace RoutineManagement.Controllers
         {
 
         }
+
+        public string ValidateRoutineName(string routineName, string area)
+        {
+            return AgendaRoutineModel.ValidateRoutineName(routineName, area);
+        }
+
+
+        public string GetFieldTypes()
+        {
+            return new JavaScriptSerializer().Serialize(Json(AgendaRoutineModel.GetFieldTypes()).Data);
+        }
+        
     }
 }

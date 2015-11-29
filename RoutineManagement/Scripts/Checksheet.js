@@ -4,13 +4,9 @@
 
 document.ChecksheetLib =
 {
-    //ToDo:
-        //get this from DB.
-    FieldTypes: [
-            { id: '1', name: 'Text', htmlType: "text" },
-            { id: '2', name: 'Checkbox', htmlType: "checkbox" },
-            { id: '3', name: 'Number', htmlType: "number" }
-    ],
+    //ares and types loaded from db, see Init function
+    PlantAreas: null,
+    FieldTypes: null,
 
     Schedule:function(){
         this.ScheduledRoutines = new Array();
@@ -92,7 +88,7 @@ document.ChecksheetLib =
     },
 
     SaveRoutine: function (Routine) {
-        console.log("saving");
+     
         $.ajax({
             url: "http://localhost:57425/Home/SaveRoutine",
             type: "POST",
@@ -119,7 +115,44 @@ document.ChecksheetLib =
         lib.AddFieldToChecksheet(sheet, new lib.Field("Field 1", true, false));
 
         return sheet;
+    },
+
+    Init: function () {
+
+        $.ajax({
+            url: "http://localhost:57425/Home/GetAreas",
+            type: "GET",
+            contentType: 'application/json;',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                document.ChecksheetLib.PlantAreas = data;
+            },
+            fail: function (data) {
+                console.log('failed to get areas: ');
+            }
+
+        });
+
+        $.ajax({
+            url: "http://localhost:57425/Home/GetFieldTypes",
+            type: "GET",
+            contentType: 'application/json;',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                document.ChecksheetLib.FieldTypes = data;
+            },
+            fail: function (data) {
+                console.log('failed to get types: ');
+            }
+
+        });
+
     }
 
+
+    
 };
 
+document.ChecksheetLib.Init();

@@ -229,7 +229,7 @@ $TextInputSelected_Colour: #0c60b1;
 }
 
 .textInput {
-    @include border-opacity(255,255,255,0.2);
+    @include border-opacity(0,0,0,0.2);
 }
 
 .checksheetTable--row:nth-child(even) input {

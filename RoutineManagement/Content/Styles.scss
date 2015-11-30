@@ -144,7 +144,7 @@
 $ChecksheetTitle_Colour: #222222;
 $ChecksheetRowDark_Colour: #303030;
 $ChecksheetRowLight_Colour: #4f4f4f;
-$Background_Colour: #808080;
+$Background_Colour: #ffffff;
 $highlight_Colour: #1a1a1a;
 
 $TextInputError_Colour: #ba0808;
@@ -153,11 +153,15 @@ $TextInputSelected_Colour: #0c60b1;
 /* END VARIABLES */
 
 
-.body {
+body {
     background-color: $Background_Colour;
     @include box-sizing(border-box);
 }
 
+pre{
+    background-color:$Background_Colour;
+    border:none;
+}
 
 .checksheetTable {
     font-weight: bold;

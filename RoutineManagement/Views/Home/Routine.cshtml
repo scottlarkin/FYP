@@ -7,7 +7,7 @@
             </div>
             <div class="row">
                 <span class="col-lg-2">Routine Description: </span>
-                <textarea class="textInput col-lg-10" ng-model="routine.Description"></textarea>
+                <pre class="col-lg-10">{{routine.Description}}</pre>
             </div>
            
             <div class="row" ng-repeat="Checksheet in routine.Checksheets">
@@ -43,6 +43,9 @@
             </div>
         </div>
     </div>
+
+    <input type="button" value="Save" />
+    <input type="button" value="Complete" />
 
 </div>
 <script>

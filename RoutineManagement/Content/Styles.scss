@@ -384,4 +384,12 @@ $TextInputSelected_Colour: #0c60b1;
         @include transform(rotateY(-270deg) translateX(50px));
         @include transform-origin(top right);
     }
+
+    .text{
+        position:relative;
+        top:150px;
+        left:80px;
+        color:black;
+        font-weight:bolder;
+    }
 }

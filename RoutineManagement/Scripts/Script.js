@@ -195,17 +195,17 @@ RoutineManagement.controller("Schedule", function ($scope) {
             dataType: 'json',
             data: JSON.stringify(sr),
 
-            success: function () {
+            complete: function () {
+                refreshSchedule();
             },
             fail: function () {
                 alert('Failed to schedule routine ');
             }
 
         });
-
+        
+        $scope.PopupHidden = true;
         resetSelections();
-
-        refreshSchedule();
 
     }
 
@@ -221,8 +221,8 @@ RoutineManagement.controller("Schedule", function ($scope) {
         resetSelections();
     }
 
-    $scope.RoutineClick = function (routineID) {
-        window.location.href = 'Home/Routine?routineID=' + routineID;
+    $scope.RoutineClick = function (scheduleID) {
+        window.location.href = 'Home/Routine?scheduleID=' + scheduleID;
     }
 
 });
@@ -233,11 +233,11 @@ RoutineManagement.controller("CompleteRoutine", function ($scope) {
     $scope.fieldTypes = document.ChecksheetLib.FieldTypes;
   
     $.ajax({
-        url: "http://localhost:57425/Home/LoadRoutine",
+        url: "http://localhost:57425/Home/LoadScheduledRoutine",
         type: "GET",
         contentType: 'application/json;',
         dataType: 'json',
-        data: { RoutineID: routineID },
+        data: { ScheduleID: scheduleID },
 
         success: function (data) {
             $scope.$apply(function () {
@@ -245,7 +245,7 @@ RoutineManagement.controller("CompleteRoutine", function ($scope) {
             });
         },
         fail: function (data) {
-            console.log('failed to load routine: ' + routineID);
+            console.log('failed to load routine: ' + scheduleID);
         }
 
     });
@@ -262,10 +262,10 @@ RoutineManagement.controller("CreateRoutine", function ($scope) {
     $scope.fieldTypes = document.ChecksheetLib.FieldTypes;
     $scope.areas = document.ChecksheetLib.PlantAreas;
 
+    $scope.routine.Area = $scope.areas[0];
+
     $scope.UpdateTypeID = function (Field) {
-        console.log("updating type from " + Field.TypeID + " to " + Field.Type.ID);
         Field.TypeID = Field.Type.ID;
-        console.log(Field.TypeID);
     }
 
     $scope.AddChecksheetClick = function () {

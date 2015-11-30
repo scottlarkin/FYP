@@ -14,10 +14,10 @@ namespace RoutineManagement.Controllers
             return View();
         }
 
-        public ActionResult Routine(int routineID)
+        public ActionResult Routine(int scheduleID)
         {
-            ViewBag.Title = "Routine";
-            ViewBag.RoutineID = routineID;
+            ViewBag.Title = "Scheduled Routine";
+            ViewBag.ScheduleID = scheduleID;
 
             return View();
         }
@@ -40,6 +40,14 @@ namespace RoutineManagement.Controllers
         {
             AgendaRoutineModel routine = new AgendaRoutineModel();
             routine.Load(RoutineID);
+
+            return new JavaScriptSerializer().Serialize(Json(routine).Data);
+        }
+
+        public string LoadScheduledRoutine(int ScheduleID)
+        {
+            AgendaRoutineModel routine = new AgendaRoutineModel();
+            routine.LoadScheduledRoutine(ScheduleID);
 
             return new JavaScriptSerializer().Serialize(Json(routine).Data);
         }

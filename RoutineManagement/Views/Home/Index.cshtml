@@ -39,7 +39,7 @@
                 <span class="sortorder" ng-show="predicate === 'Completedby'" ng-class="{reverse:reverse}"></span>
             </td>
         </tr>
-        <tr class="scheduleTable--row" ng-repeat="Row in schedule.ScheduledRoutines | orderBy:predicate:reverse" ng-click="RoutineClick(42)">
+        <tr class="scheduleTable--row" ng-repeat="Row in schedule.ScheduledRoutines | orderBy:predicate:reverse" ng-click="RoutineClick(Row.ScheduleID)">
             <td class="scheduleTable--cell">{{Row.Routine}}</td>
             <td class="scheduleTable--cell">{{Row.Area}}</td>
             <td class="scheduleTable--cell">{{Row.AssignedTeam}}</td>

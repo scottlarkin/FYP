@@ -301,4 +301,12 @@
   transform-origin: top right;
 }
 
+.spinner-wrap .text {
+  position: relative;
+  top: 150px;
+  left: 80px;
+  color: black;
+  font-weight: bolder;
+}
+
 /*# sourceMappingURL=Styles.css.map */

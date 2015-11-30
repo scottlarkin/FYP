@@ -12,8 +12,9 @@ namespace MvcApplication2.Models
     {
         public ScheduledRoutine() { }
 
-        public ScheduledRoutine(string rid, string a, string at, string au, string d, string co, string cb, string r, int? rate = null, string period = null, int? number = null)
+        public ScheduledRoutine(string sid, string rid, string a, string at, string au, string d, string co, string cb, string r, int? rate = null, string period = null, int? number = null)
         {
+            ScheduleID = int.Parse(sid);
             RoutineID = int.Parse(rid);
             Area = a;
             AssignedTeam = at;
@@ -44,6 +45,7 @@ namespace MvcApplication2.Models
             }
         }
 
+        public int ScheduleID { get; set; }
         public int RoutineID { get; set; }
         public string Area { get; set; }
         public string AssignedTeam { get; set; }
@@ -78,6 +80,7 @@ namespace MvcApplication2.Models
                     {
 
                         ScheduledRoutines.Add(new ScheduledRoutine(
+                                dr["ScheduleID"].ToString(),
                                 dr["RoutineID"].ToString(),
                                 dr["Area"].ToString(),
                                 dr["AssignedTeam"].ToString(),
@@ -231,7 +234,7 @@ namespace MvcApplication2.Models
 
                     FieldType ft;
 
-                    foreach(DataRow row in dt.Rows)
+                    foreach (DataRow row in dt.Rows)
                     {
                         ft = new FieldType();
 
@@ -319,6 +322,73 @@ namespace MvcApplication2.Models
             }
         }
 
+
+        public void LoadScheduledRoutine(int ScheduleID)
+        {
+            //execute procedure to get a routine and convert data tables to C# model
+            using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                List<SqlParameter> parameters = new List<SqlParameter>();
+
+                parameters.Add(new SqlParameter("@ScheduleID", SqlDbType.Int) { Value = ScheduleID });
+
+                using (DataSet routine = database.GetDataSet("dbo.ScheduledRoutineGet", parameters))
+                {
+                    DataTable checksheets = routine.Tables[1];
+                    DataTable fields = routine.Tables[2];
+                    DataTable records = routine.Tables[3];
+                    DataTable fieldvalues = routine.Tables[4];
+
+                    int fieldCounter = 0;
+                    int recordCounter = 0;
+                    int fieldValueCounter = 0;
+
+                    this.ID = int.Parse(routine.Tables[0].Rows[0]["ID"].ToString());
+                    Name = routine.Tables[0].Rows[0]["Name"].ToString();
+
+                    foreach (DataRow csRow in checksheets.Rows)
+                    {
+                        int numFields = int.Parse(csRow["FieldCount"].ToString());
+                        int numRecords = int.Parse(csRow["RecordCount"].ToString());
+                        ChecksheetModel checksheet = new ChecksheetModel();
+
+                        checksheet.Name = csRow["ChecksheetName"].ToString();
+
+                        for (int i = 0; i < numFields; i++)
+                        {
+                            Field field = new Field();
+
+                            field.Name = fields.Rows[fieldCounter]["FieldName"].ToString();
+                            field.TypeID = int.Parse(fields.Rows[fieldCounter++]["FieldTypeID"].ToString());
+
+                            checksheet.Fields.Add(field);
+                        }
+
+                        for (int i = 0; i < numRecords; i++)
+                        {
+                            Record record = new Record();
+
+                            record.Name = records.Rows[recordCounter++]["RecordName"].ToString();
+
+                            if (i > 0)
+                            {
+                                for (int j = 0; j < numFields; j++)
+                                {
+                                    FieldValue fieldValue = new FieldValue();
+                                    fieldValue.Editable = fieldvalues.Rows[fieldValueCounter]["Editable"].ToString() == "true";
+                                    fieldValue.Value = fieldvalues.Rows[fieldValueCounter++]["Value"].ToString();
+                                    record.FieldValues.Add(fieldValue);
+                                }
+                            }
+
+                            checksheet.Records.Add(record);
+                        }
+
+                        Checksheets.Add(checksheet);
+                    }
+                }
+            }
+        }
 
         public static string ValidateRoutineName(string routinename, string area)
         {
@@ -417,7 +487,7 @@ namespace MvcApplication2.Models
                 parameters.Add(new SqlParameter("@Records", SqlDbType.Structured) { TypeName = "dbo.RecordList", Value = records });
                 parameters.Add(new SqlParameter("@Fields", SqlDbType.Structured) { TypeName = "dbo.FieldList", Value = fields });
                 parameters.Add(new SqlParameter("@FieldValues", SqlDbType.Structured) { TypeName = "dbo.FieldValueList", Value = fieldValues });
-                parameters.Add(new SqlParameter("@Area", SqlDbType.NVarChar) { Value = Area.ToString().Replace("'", "''")});
+                parameters.Add(new SqlParameter("@Area", SqlDbType.NVarChar) { Value = Area.ToString().Replace("'", "''") });
 
                 database.ExecuteProcedure("dbo.RoutineSave", parameters);
 

@@ -231,7 +231,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
 RoutineManagement.controller("CompleteRoutine", function ($scope) {
 
     $scope.fieldTypes = document.ChecksheetLib.FieldTypes;
-
+  
     $.ajax({
         url: "http://localhost:57425/Home/LoadRoutine",
         type: "GET",
@@ -261,8 +261,12 @@ RoutineManagement.controller("CreateRoutine", function ($scope) {
 
     $scope.fieldTypes = document.ChecksheetLib.FieldTypes;
     $scope.areas = document.ChecksheetLib.PlantAreas;
-    $scope.SelectedArea = null;
 
+    $scope.UpdateTypeID = function (Field) {
+        console.log("updating type from " + Field.TypeID + " to " + Field.Type.ID);
+        Field.TypeID = Field.Type.ID;
+        console.log(Field.TypeID);
+    }
 
     $scope.AddChecksheetClick = function () {
         $scope.routine.Checksheets.push(new document.ChecksheetLib.CreateEmptyChecksheet());

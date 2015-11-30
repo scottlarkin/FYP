@@ -32,7 +32,8 @@
                         </td>
                         <td ng-repeat="FieldValue in Record.FieldValues">
                             <input class="js-input checksheetTable--fieldInput"
-                                   type="{{Checksheet.Fields[$index].Type.htmlType}}" ng-model="FieldValue.Value" />
+                                   type=" {{fieldTypes[Checksheet.Fields[$index].TypeID - 1].HtmlType}} "
+                                    ng-model=" fieldvalue.value"/>
                         </td>
                     </tr>
                 </table>

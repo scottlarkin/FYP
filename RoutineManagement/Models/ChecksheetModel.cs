@@ -219,6 +219,7 @@ namespace MvcApplication2.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public List<ChecksheetModel> Checksheets { get; set; }
+        public string Area { get; set; }
 
         public static List<FieldType> GetFieldTypes()
         {
@@ -286,7 +287,9 @@ namespace MvcApplication2.Models
                         {
                             Field field = new Field();
 
-                            field.Name = fields.Rows[fieldCounter++]["FieldName"].ToString();
+                            field.Name = fields.Rows[fieldCounter]["FieldName"].ToString();
+                            field.TypeID = int.Parse(fields.Rows[fieldCounter++]["FieldTypeID"].ToString());
+
                             checksheet.Fields.Add(field);
                         }
 
@@ -414,6 +417,7 @@ namespace MvcApplication2.Models
                 parameters.Add(new SqlParameter("@Records", SqlDbType.Structured) { TypeName = "dbo.RecordList", Value = records });
                 parameters.Add(new SqlParameter("@Fields", SqlDbType.Structured) { TypeName = "dbo.FieldList", Value = fields });
                 parameters.Add(new SqlParameter("@FieldValues", SqlDbType.Structured) { TypeName = "dbo.FieldValueList", Value = fieldValues });
+                parameters.Add(new SqlParameter("@Area", SqlDbType.NVarChar) { Value = Area.ToString().Replace("'", "''")});
 
                 database.ExecuteProcedure("dbo.RoutineSave", parameters);
 

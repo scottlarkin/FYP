@@ -4,11 +4,11 @@
         <div class="col-lg-12">
             <div class="row">
                 <span class="col-lg-2">Routine Name: </span>
-                <input id="RoutineNameInput" class="textInput col-lg-10" type="text" ng-model="routine.Name" ng-change="ValidateRoutineName(routine.Name, SelectedArea)" />
+                <input id="RoutineNameInput" class="textInput col-lg-10" type="text" ng-model="routine.Name" ng-change="ValidateRoutineName(routine.Name, routine.Area)" />
                 <span> Select Area: </span>
                 <select ng-options="option for option in areas track by option"
-                        ng-model="SelectedArea"
-                        ng-change="ValidateRoutineName(routine.Name, SelectedArea)"></select>
+                        ng-model="routine.Area"
+                        ng-change="ValidateRoutineName(routine.Name, routine.Area)"></select>
 
             </div>
             <div class="row">
@@ -44,7 +44,8 @@
 
                             <div class="checksheetTable--fieldTitle--Dropdown">
                                 <select ng-options="option.Name for option in fieldTypes track by option.ID"
-                                        ng-model="Field.Type"></select>
+                                        ng-model="Field.Type"
+                                        ng-change="UpdateTypeID(Field)"></select>
                             </div>
                         </td>
                     </tr>

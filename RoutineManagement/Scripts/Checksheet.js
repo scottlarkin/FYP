@@ -25,7 +25,7 @@ document.ChecksheetLib =
     },
 
     AgendaRoutine: function (Name, Description, Area, ID) {
-        console.log(routineID);
+
         this.ID = routineID || 300;
         this.Name = Name || "New Routine";
         this.Description = Description || "desc ";
@@ -150,8 +150,6 @@ document.ChecksheetLib =
         });
 
     }
-
-
     
 };
 

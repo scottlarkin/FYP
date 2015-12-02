@@ -32,10 +32,10 @@
                         </td>
                         <td ng-repeat="FieldValue in Record.FieldValues">
                             <input class="js-input checksheetTable--fieldInput"
-                                   type=" {{fieldTypes[Checksheet.Fields[$index].TypeID - 1].HtmlType}} "
+                                   type="{{fieldTypes[Checksheet.Fields[$index].TypeID - 1].HtmlType}}"
+                                   step="any"
                                    ng-model="FieldValue.Value"
-                                   ng-if="FieldValue.Editable"
-                                   />
+                                   ng-if="FieldValue.Editable" />
                             <p ng-if="!FieldValue.Editable">{{FieldValue.Value}}</p>
                         </td>
                     </tr>
@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <input type="button" value="Save" />
+    <input type="button" value="Save" ng-click="SaveRoutine()" />
     <input type="button" value="Complete" />
 
 </div>

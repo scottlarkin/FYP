@@ -288,5 +288,50 @@ namespace RoutineManagement.Models
             return success;
         }
 
+        public void SaveScheduledRoutine(int scheduleID)
+        {
+
+            using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                List<SqlParameter> parameters = new List<SqlParameter>();
+                DataTable fieldValues = new DataTable();
+
+                fieldValues.Columns.Add("ChechsheetID", typeof(int));
+                fieldValues.Columns.Add("Value", typeof(string));
+                fieldValues.Columns.Add("Editable", typeof(string));
+
+                for (int i = 0; i < Checksheets.Count; i++)
+                {
+                    ChecksheetModel cs = Checksheets[i];
+                    
+                    foreach (Record r in cs.Records)
+                    {
+                       
+                        if (r != cs.Records[0])
+                        {
+                            foreach (FieldValue fv in r.FieldValues)
+                            {
+                                DataRow fvNewRow = fieldValues.NewRow();
+
+                                fvNewRow["ChechsheetID"] = 0;
+                                if (fv.Value != null)
+                                {
+                                    fvNewRow["Value"] = fv.Value.Replace("'", "''");
+                                }
+                                fvNewRow["Editable"] = fv.Editable.ToString();
+
+                                fieldValues.Rows.Add(fvNewRow);
+                            }
+                        }
+                    }
+                }
+
+                parameters.Add(new SqlParameter("@ScheduleID", SqlDbType.Int) { Value = scheduleID });
+                parameters.Add(new SqlParameter("@FieldValuesT", SqlDbType.Structured) { TypeName = "dbo.FieldValueList", Value = fieldValues });
+
+                database.ExecuteProcedure("dbo.ScheduledRoutineSave", parameters);
+            }
+        }
+
     };
 }

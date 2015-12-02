@@ -36,6 +36,11 @@ namespace RoutineManagement.Controllers
             Routine.Save();
         }
 
+        public void SaveScheduledRoutine(AgendaRoutineModel Routine, int ScheduleID)
+        {
+            Routine.SaveScheduledRoutine(ScheduleID);
+        }
+
         public string LoadRoutine(int RoutineID)
         {
             AgendaRoutineModel routine = new AgendaRoutineModel();

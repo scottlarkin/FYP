@@ -187,7 +187,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
         sr.Rate = $scope.SelectedRate;
         sr.Period = $scope.SelectedPeriod;
         sr.Number = $scope.SelectedNumber;
-        
+
         $.ajax({
             url: "http://localhost:57425/Home/ScheduleRoutine",
             type: "POST",
@@ -203,7 +203,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
             }
 
         });
-        
+
         $scope.PopupHidden = true;
         resetSelections();
 
@@ -231,7 +231,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
 RoutineManagement.controller("CompleteRoutine", function ($scope) {
 
     $scope.fieldTypes = document.ChecksheetLib.FieldTypes;
-  
+
     $.ajax({
         url: "http://localhost:57425/Home/LoadScheduledRoutine",
         type: "GET",
@@ -249,6 +249,28 @@ RoutineManagement.controller("CompleteRoutine", function ($scope) {
         }
 
     });
+
+    $scope.SaveRoutine = function () {
+
+      
+        $.ajax({
+            url: "http://localhost:57425/Home/SaveScheduledRoutine",
+            type: "POST",
+            contentType: 'application/json;',
+            dataType: 'json',
+            data: JSON.stringify({
+                Routine:$scope.routine,
+                ScheduleID:scheduleID
+            }),
+
+            success: function (data) {
+
+            },
+            fail: function (data) {
+                console.log('failed to save routine: ' + scheduleID);
+            }
+        });
+    }
 
 });
 

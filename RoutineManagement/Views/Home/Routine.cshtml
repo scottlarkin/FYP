@@ -34,9 +34,14 @@
                             <input class="js-input checksheetTable--fieldInput"
                                    type="{{fieldTypes[Checksheet.Fields[$index].TypeID - 1].HtmlType}}"
                                    step="any"
+                                   ng-checked="FieldValue.Value === 'True' || FieldValue.Value === true"
                                    ng-model="FieldValue.Value"
-                                   ng-if="FieldValue.Editable" />
+                                   ng-if="FieldValue.Editable"
+                                   
+                                   ng-click="t($parent.$parent.$index, $parent.$index, $index);" />
+
                             <p ng-if="!FieldValue.Editable">{{FieldValue.Value}}</p>
+
                         </td>
                     </tr>
                 </table>

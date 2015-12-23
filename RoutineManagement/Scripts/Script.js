@@ -230,6 +230,31 @@ RoutineManagement.controller("Schedule", function ($scope) {
 //contains functionality for loading, viewing, and filling in routines
 RoutineManagement.controller("CompleteRoutine", function ($scope) {
 
+
+    $scope.x = function (y) {
+        console.log(y);
+
+    }
+
+    $scope.t = function (checksheetID, recordID, fieldID) {
+
+        console.log(checksheetID + '   ' + recordID + '   ' + fieldID);
+
+        var fv = $scope.routine.Checksheets[0].Records[recordID].FieldValues;
+
+        console.log(fv);
+
+        if (fv === 'False' || fv === false) {
+            fv = true;
+        }
+        else {
+            fv = false;
+        }
+
+        console.log(fv);
+
+    }
+
     $scope.fieldTypes = document.ChecksheetLib.FieldTypes;
 
     $.ajax({

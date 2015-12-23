@@ -58,7 +58,10 @@
                         </td>
                         <td ng-repeat="FieldValue in Record.FieldValues">
                             <input class="js-input checksheetTable--fieldInput"
-                                   type="{{Checksheet.Fields[$index].Type.HtmlType}}" step="any" ng-model="FieldValue.Value" />
+                                   type="{{Checksheet.Fields[$index].Type.HtmlType}}"
+                                   step="any"
+                                   ng-model="FieldValue.Value"
+                                   ng-disabled="Checksheet.Fields[$index].Type.HtmlType === 'checkbox'" />
                         </td>
                     </tr>
 

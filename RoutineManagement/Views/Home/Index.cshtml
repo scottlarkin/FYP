@@ -1,114 +1,116 @@
 ﻿<div ng-controller="Schedule">
+    
+    <div ng-cloak>
 
-    <h2>Schedule</h2>
+        <h2>Schedule</h2>
 
-    <input type="button" value="Schedule a Routine" ng-click="ScheduleRoutineClick()" />
+        <input type="button" value="Schedule a Routine" ng-click="ScheduleRoutineClick()" />
 
-    <h2 ng-if="schedule.ScheduledRoutines.length < 1">
-        No Routines Scheduled
-    </h2>
+        <h2 ng-if="schedule.ScheduledRoutines.length < 1">
+            No Routines Scheduled
+        </h2>
 
-    <table class="scheduleTable" ng-if="schedule.ScheduledRoutines.length > 0">
-        <tr class="scheduleTable--row">
-            <td class="scheduleTable--titleCell" ng-click="order('Routine')">
-                Routine Name
-                <span class="sortorder" ng-show="predicate === 'Routine'" ng-class="{reverse:reverse}"></span>
-            </td>
-            <td class="scheduleTable--titleCell" ng-click="order('Area')">
-                Area
-                <span class="sortorder" ng-show="predicate === 'Area'" ng-class="{reverse:reverse}"></span>
-            </td>
-            <td class="scheduleTable--titleCell" ng-click="order('AssignedTeam')">
-                Assigned Team
-                <span class="sortorder" ng-show="predicate === 'AssignedTeam'" ng-class="{reverse:reverse}"></span>
-            </td>
-            <td class="scheduleTable--titleCell" ng-click="order('AssignedUser')">
-                Assigned User
-                <span class="sortorder" ng-show="predicate === 'AssignedUser'" ng-class="{reverse:reverse}"></span>
-            </td>
-            <td class="scheduleTable--titleCell" ng-click="order('DueOn')">
-                Due Date
-                <span class="sortorder" ng-show="predicate === 'DueOn'" ng-class="{reverse:reverse}"></span>
-            </td>
-            <td class="scheduleTable--titleCell" ng-click="order('CompletedOn')">
-                Completed On
-                <span class="sortorder" ng-show="predicate === 'CompletedOn'" ng-class="{reverse:reverse}"></span>
-            </td>
-            <td class="scheduleTable--titleCell" ng-click="order('Completedby')">
-                Completed By
-                <span class="sortorder" ng-show="predicate === 'Completedby'" ng-class="{reverse:reverse}"></span>
-            </td>
-        </tr>
-        <tr class="scheduleTable--row" ng-repeat="Row in schedule.ScheduledRoutines | orderBy:predicate:reverse" ng-click="RoutineClick(Row.ScheduleID)">
-            <td class="scheduleTable--cell">{{Row.Routine}}</td>
-            <td class="scheduleTable--cell">{{Row.Area}}</td>
-            <td class="scheduleTable--cell">{{Row.AssignedTeam}}</td>
-            <td class="scheduleTable--cell">{{Row.AssignedUser}}</td>
-            <td class="scheduleTable--cell">{{Row.DueOn}}</td>
-            <td class="scheduleTable--cell">{{Row.CompletedOn}}</td>
-            <td class="scheduleTable--cell">{{Row.Completedby}}</td>
-        </tr>
-    </table>
+        <table class="scheduleTable" ng-if="schedule.ScheduledRoutines.length > 0">
+            <tr class="scheduleTable--row">
+                <td class="scheduleTable--titleCell" ng-click="order('Routine')">
+                    Routine Name
+                    <span class="sortorder" ng-show="predicate === 'Routine'" ng-class="{reverse:reverse}"></span>
+                </td>
+                <td class="scheduleTable--titleCell" ng-click="order('Area')">
+                    Area
+                    <span class="sortorder" ng-show="predicate === 'Area'" ng-class="{reverse:reverse}"></span>
+                </td>
+                <td class="scheduleTable--titleCell" ng-click="order('AssignedTeam')">
+                    Assigned Team
+                    <span class="sortorder" ng-show="predicate === 'AssignedTeam'" ng-class="{reverse:reverse}"></span>
+                </td>
+                <td class="scheduleTable--titleCell" ng-click="order('AssignedUser')">
+                    Assigned User
+                    <span class="sortorder" ng-show="predicate === 'AssignedUser'" ng-class="{reverse:reverse}"></span>
+                </td>
+                <td class="scheduleTable--titleCell" ng-click="order('DueOn')">
+                    Due Date
+                    <span class="sortorder" ng-show="predicate === 'DueOn'" ng-class="{reverse:reverse}"></span>
+                </td>
+                <td class="scheduleTable--titleCell" ng-click="order('CompletedOn')">
+                    Completed On
+                    <span class="sortorder" ng-show="predicate === 'CompletedOn'" ng-class="{reverse:reverse}"></span>
+                </td>
+                <td class="scheduleTable--titleCell" ng-click="order('Completedby')">
+                    Completed By
+                    <span class="sortorder" ng-show="predicate === 'Completedby'" ng-class="{reverse:reverse}"></span>
+                </td>
+            </tr>
+            <tr class="scheduleTable--row" ng-repeat="Row in schedule.ScheduledRoutines | orderBy:predicate:reverse" ng-click="RoutineClick(Row.ScheduleID)">
+                <td class="scheduleTable--cell">{{Row.Routine}}</td>
+                <td class="scheduleTable--cell">{{Row.Area}}</td>
+                <td class="scheduleTable--cell">{{Row.AssignedTeam}}</td>
+                <td class="scheduleTable--cell">{{Row.AssignedUser}}</td>
+                <td class="scheduleTable--cell">{{Row.DueOn}}</td>
+                <td class="scheduleTable--cell">{{Row.CompletedOn}}</td>
+                <td class="scheduleTable--cell">{{Row.Completedby}}</td>
+            </tr>
+        </table>
 
-    <div class="overlay" ng-hide="PopupHidden"></div>
+        <div class="overlay" ng-hide="PopupHidden"></div>
 
-    <div class="popup" ng-hide="PopupHidden">
+        <div class="popup" ng-hide="PopupHidden">
 
-        <p> Select Plant Area:</p>
-        <select ng-options="name for name in Areas"
-                ng-model="SelectedArea"
-                ng-change="areaChanged(SelectedArea)"></select>
+            <p> Select Plant Area:</p>
+            <select ng-options="name for name in Areas"
+                    ng-model="SelectedArea"
+                    ng-change="areaChanged(SelectedArea)"></select>
 
-        <br />
+            <br />
 
-        <p> Select Routine: </p>
-        <select ng-if="SelectedArea !== ''"
-                ng-model="SelectedRoutine"
-                ng-options="name for name in Routines"
-                ng-change="RoutineSelected(SelectedRoutine)"></select>
+            <p> Select Routine: </p>
+            <select ng-if="SelectedArea !== ''"
+                    ng-model="SelectedRoutine"
+                    ng-options="name for name in Routines"
+                    ng-change="RoutineSelected(SelectedRoutine)"></select>
 
-        <p ng-if="SelectedArea == ''"><span> Must select an area first</span></p>
-        <br />
+            <p ng-if="SelectedArea == ''"><span> Must select an area first</span></p>
+            <br />
 
-        <p> Select Team: </p>
-        <select ng-if="SelectedArea !== ''"
-                ng-options="name for name in Teams"
-                ng-model="SelectedTeam"
-                ng-change="getUsersByTeam(SelectedTeam)"></select>
+            <p> Select Team: </p>
+            <select ng-if="SelectedArea !== ''"
+                    ng-options="name for name in Teams"
+                    ng-model="SelectedTeam"
+                    ng-change="getUsersByTeam(SelectedTeam)"></select>
 
-        <p ng-if="SelectedArea == ''"><span> Must select an area first</span></p>
-        <br />
+            <p ng-if="SelectedArea == ''"><span> Must select an area first</span></p>
+            <br />
 
-        <p> Select User: </p>
-        <select ng-if="SelectedTeam !== ''"
-                ng-options="name for name in Users"
-                ng-model="SelectedUser"
-                ng-change="userChanged(SelectedUser)"></select>
+            <p> Select User: </p>
+            <select ng-if="SelectedTeam !== ''"
+                    ng-options="name for name in Users"
+                    ng-model="SelectedUser"
+                    ng-change="userChanged(SelectedUser)"></select>
 
-        <p ng-if="SelectedTeam == ''"> <span>Must select a team first</span></p>
-        <br />
+            <p ng-if="SelectedTeam == ''"> <span>Must select a team first</span></p>
+            <br />
 
-        <p>Enter Due Date: </p>
-        <input type="date" ng-model="SelectedDate" />
-        <br />
+            <p>Enter Due Date: </p>
+            <input type="date" ng-model="SelectedDate" />
+            <br />
 
-        <p>Occurs Every</p>
-        <input type="number" ng-model="SelectedRate" />
+            <p>Occurs Every</p>
+            <input type="number" ng-model="SelectedRate" />
 
-        <select ng-options="name for name in TimePeriod"
-                ng-model="SelectedPeriod"></select>
-        <br />
+            <select ng-options="name for name in TimePeriod"
+                    ng-model="SelectedPeriod"></select>
+            <br />
 
-        <p>Number of occurances:</p>
-        <input type="number" ng-model="SelectedNumber" />
+            <p>Number of occurances:</p>
+            <input type="number" ng-model="SelectedNumber" />
 
-        <br />
+            <br />
 
-        <input type="button" value="Save" ng-click="SaveScheduleClick()" />
-        <input type="button" value="Cancel" ng-click="CancelScheduleClick()" />
+            <input type="button" value="Save" ng-click="SaveScheduleClick()" />
+            <input type="button" value="Cancel" ng-click="CancelScheduleClick()" />
+
+        </div>
 
     </div>
-
-
 </div>
 <script src="~/Scripts/Checksheet.js"></script>

@@ -152,6 +152,9 @@ $TextInputSelected_Colour: #0c60b1;
 
 /* END VARIABLES */
 
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
 
 body {
     background-color: $Background_Colour;
@@ -190,10 +193,11 @@ pre{
     color: #FFFFFF;
 }
 
+
 .scheduleTable {
 }
 
-.scheduleTable--row {
+.scheduleTable--row{
     @extend .checksheetTable--row;
 }
 
@@ -222,6 +226,34 @@ pre{
 .scheduleTable--row:hover:not(:first-child) {
     background-color: $highlight_Colour;
     cursor: pointer;
+}
+
+.routineTable--row{
+    @extend .checksheetTable--row;
+}
+
+.routineTable--row:nth-child(even) {
+    @extend .checksheetTable--row:nth-child(even);
+}
+
+.routineTable--row:nth-child(odd) {
+    @extend .checksheetTable--row:nth-child(odd);
+}
+
+.routineTable--row:first-child {
+    @extend .scheduleTable--row:first-child;
+}
+
+.routineTable--cell {
+    @extend .scheduleTable--cell;
+}
+
+.routineTable--titleCell {
+    @extend .scheduleTable--titleCell;
+}
+
+.routineTable--row:hover:not(:first-child) {
+    @extend .scheduleTable--row:hover:not(:first-child);
 }
 
 .sortorder:after {
@@ -336,12 +368,10 @@ pre{
 
 /* loading spinner */
 .spinner-wrap {
+    @include centerer;
     height: 300px;
     margin-top: 50px;
-    position: fixed;
-    z-index: 9999999;
-    left: 0;
-    top: 0;
+    z-index: 99999;
 
     @include keyframes (spin) {
         from {

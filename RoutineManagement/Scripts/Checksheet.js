@@ -26,7 +26,7 @@ document.ChecksheetLib =
 
     AgendaRoutine: function (Name, Description, Area, ID) {
 
-        this.ID = routineID || 300;
+        this.ID = routineID || -1;
         this.Name = Name || "New Routine";
         this.Description = Description || "desc ";
         this.Area = Area;

@@ -230,32 +230,18 @@ RoutineManagement.controller("Schedule", function ($scope) {
 //contains functionality for loading, viewing, and filling in routines
 RoutineManagement.controller("CompleteRoutine", function ($scope) {
 
-
-    $scope.x = function (y) {
-        console.log(y);
-
-    }
-
-    $scope.t = function (checksheetID, recordID, fieldID) {
-
-        console.log(checksheetID + '   ' + recordID + '   ' + fieldID);
-
-        var fv = $scope.routine.Checksheets[0].Records[recordID].FieldValues;
-
-        console.log(fv);
-
-        if (fv === 'False' || fv === false) {
-            fv = true;
-        }
-        else {
-            fv = false;
-        }
-
-        console.log(fv);
-
-    }
-
+    $scope.loading = true;
     $scope.fieldTypes = document.ChecksheetLib.FieldTypes;
+
+    $('.js-spinner').removeClass('ng-cloak');
+
+    //ng-model not updating the fieldvalues correctly for checkboxes...this function is a hacky work around
+    $scope.CheckboxClick = function (fieldIdx, recordIdx, csIdx, e) {
+
+        if (e.target.type !== 'checkbox') return;
+
+        $scope.routine.Checksheets[csIdx].Records[recordIdx].FieldValues[fieldIdx].Value = e.target.checked;
+    }
 
     $.ajax({
         url: "http://localhost:57425/Home/LoadScheduledRoutine",
@@ -269,29 +255,37 @@ RoutineManagement.controller("CompleteRoutine", function ($scope) {
                 $scope.routine = data;
             });
         },
-        fail: function (data) {
+        error: function (data) {
             console.log('failed to load routine: ' + scheduleID);
+        },
+        complete: function () {
+
+            $scope.$apply(function () {
+                $scope.loading = false;
+            })
+
+            $('.js-spinner').addClass('ng-cloak');
+
         }
 
     });
 
     $scope.SaveRoutine = function () {
 
-      
         $.ajax({
             url: "http://localhost:57425/Home/SaveScheduledRoutine",
             type: "POST",
             contentType: 'application/json;',
             dataType: 'json',
             data: JSON.stringify({
-                Routine:$scope.routine,
-                ScheduleID:scheduleID
+                Routine: $scope.routine,
+                ScheduleID: scheduleID
             }),
 
             success: function (data) {
 
             },
-            fail: function (data) {
+            error: function (data) {
                 console.log('failed to save routine: ' + scheduleID);
             }
         });
@@ -303,13 +297,82 @@ RoutineManagement.controller("CompleteRoutine", function ($scope) {
 //contsins functionality for creating or editing routines
 RoutineManagement.controller("CreateRoutine", function ($scope) {
 
-    $scope.routine = new document.ChecksheetLib.AgendaRoutine("New Routine", "Routine description");
-    $scope.routine.Checksheets.push(new document.ChecksheetLib.CreateEmptyChecksheet());
+    var LoadRoutines = function () {
+        $.ajax({
+            url: "http://localhost:57425/Home/GetRoutineList",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+
+                $scope.$apply(function () {
+                    $scope.routines = data;
+                    console.log($scope.routines);
+                });
+            },
+            error: function (data) {
+                console.log("failed to load list of routines");
+                console.log(data);
+            }
+        });
+    }
+
+    var ShowRoutine = function(){
+        $('.js-routineTableWrap').addClass('hidden');
+        $('.js-routineWrap').removeClass('hidden');
+    }
+
+    LoadRoutines();
 
     $scope.fieldTypes = document.ChecksheetLib.FieldTypes;
     $scope.areas = document.ChecksheetLib.PlantAreas;
 
-    $scope.routine.Area = $scope.areas[0];
+    $scope.NewRoutineClick = function () {
+
+        $scope.routine = new document.ChecksheetLib.AgendaRoutine("New Routine", "Routine description");
+        $scope.routine.Checksheets.push(new document.ChecksheetLib.CreateEmptyChecksheet());
+        $scope.routine.Area = $scope.areas[0];
+
+        ShowRoutine();
+    }
+
+    $scope.RoutineTableRowClick = function (RoutineId) {
+
+        $.ajax({
+            url: "http://localhost:57425/Home/LoadRoutine",
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json",
+            data: { RoutineID: RoutineId },
+            success: function (data) {
+
+                $scope.$apply(function () {
+                    $scope.routine = data;
+                    console.log($scope.routine);
+                    console.log($scope.fieldTypes);
+
+                    SetFieldTypes();
+
+                 });
+
+            },
+            error: function (data) {
+                console.log("failed to load selected routine");
+                console.log(data);
+            }
+        });
+
+        ShowRoutine();
+    }
+
+    var SetFieldTypes = function () {
+
+        for(var i = 0; i < $scope.routine.Checksheets.length; i++){
+
+            for (var j = 0; j < $scope.routine.Checksheets[i].Fields.length; j++) {
+                $scope.routine.Checksheets[i].Fields[j].Type = $scope.fieldTypes[$scope.routine.Checksheets[i].Fields[j].TypeID -1];
+            }
+        }
+    }
 
     $scope.UpdateTypeID = function (Field) {
         Field.TypeID = Field.Type.ID;
@@ -370,7 +433,7 @@ RoutineManagement.controller("CreateRoutine", function ($scope) {
     $scope.SaveRoutineClick = function () {
 
         var errors = $('.checksheetTable--fieldInput--error');
-        console.log(errors);
+        
         if (errors.length > 0) {
             alert("Must resolve errors before saving");
             return;

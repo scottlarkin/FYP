@@ -49,6 +49,13 @@ namespace RoutineManagement.Controllers
             return new JavaScriptSerializer().Serialize(Json(routine).Data);
         }
 
+        public string GetRoutineList()
+        {
+            List<AgendaRoutineModel> rl = AgendaRoutineModel.GetRoutineList();
+
+            return new JavaScriptSerializer().Serialize(Json(rl).Data);
+        }
+
         public string LoadScheduledRoutine(int ScheduleID)
         {
             AgendaRoutineModel routine = new AgendaRoutineModel();

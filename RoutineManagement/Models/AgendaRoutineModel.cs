@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -14,6 +15,38 @@ namespace RoutineManagement.Models
         public string Description { get; set; }
         public List<ChecksheetModel> Checksheets { get; set; }
         public string Area { get; set; }
+        public string CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+
+        public static List<AgendaRoutineModel> GetRoutineList()
+        {
+
+            List<AgendaRoutineModel> rl = new List<AgendaRoutineModel>();
+
+            using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                using(DataTable dt = database.GetDataTable("dbo.RoutineListGet", new List<SqlParameter>()))
+                {
+
+                    AgendaRoutineModel r;
+
+                    foreach(DataRow row in dt.Rows)
+                    {
+                        r = new AgendaRoutineModel();
+                        r.ID = int.Parse(row["ID"].ToString());
+                        r.Name = row["Name"].ToString();
+                        r.Description = row["Description"].ToString();
+                        r.Area = row["AreaName"].ToString();
+                        r.CreatedBy = row["UserName"].ToString();
+                        r.CreatedOn = row["CreatedOn"].ToString();
+
+                        rl.Add(r);
+                    }
+                }
+            }
+
+            return rl;
+        }
 
         public static List<FieldType> GetFieldTypes()
         {
@@ -68,6 +101,8 @@ namespace RoutineManagement.Models
 
                     this.ID = int.Parse(routine.Tables[0].Rows[0]["ID"].ToString());
                     Name = routine.Tables[0].Rows[0]["Name"].ToString();
+                    Description = routine.Tables[0].Rows[0]["Description"].ToString();
+                    Area = routine.Tables[0].Rows[0]["Area"].ToString();
 
                     foreach (DataRow csRow in checksheets.Rows)
                     {
@@ -231,7 +266,7 @@ namespace RoutineManagement.Models
 
                     csNewRow["ID"] = csID;
                     csNewRow["Name"] = cs.Name.Replace("'", "''");
-                    csNewRow["Description"] = cs.Description.Replace("'", "''");
+                    csNewRow["Description"] = "";//cs.Description.Replace("'", "''");
 
                     checksheets.Rows.Add(csNewRow);
 
@@ -273,6 +308,14 @@ namespace RoutineManagement.Models
                     }
                 }
 
+                int? id;
+
+                if(ID > 0)
+                    id = ID;
+                else
+                    id = null;
+
+                parameters.Add(new SqlParameter("@RoutineID", SqlDbType.Int) { Value = (object) id ?? DBNull.Value});
                 parameters.Add(new SqlParameter("@Name", SqlDbType.NVarChar) { Value = Name.Replace("'", "''") });
                 parameters.Add(new SqlParameter("@Description", SqlDbType.NVarChar) { Value = Description.Replace("'", "''") });
                 parameters.Add(new SqlParameter("@Checksheets", SqlDbType.Structured) { TypeName = "dbo.ChecksheetList", Value = checksheets });

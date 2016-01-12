@@ -2,6 +2,10 @@
 /* END MIXINS*/
 /* VARIABLES */
 /* END VARIABLES */
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
 body {
   background-color: #ffffff;
   -webkit-box-sizing: border-box;
@@ -18,41 +22,41 @@ pre {
   font-weight: bold;
 }
 
-.checksheetTable--row, .scheduleTable--row {
+.checksheetTable--row, .scheduleTable--row, .routineTable--row {
   color: #FFFFFF;
   height: 40px;
   padding-right: 10px;
 }
 
-.checksheetTable--row:nth-child(even), .scheduleTable--row:nth-child(even), .checksheetTable--row:nth-child(even) input, .scheduleTable--row:nth-child(even) input {
+.checksheetTable--row:nth-child(even), .scheduleTable--row:nth-child(even), .routineTable--row:nth-child(even), .checksheetTable--row:nth-child(even) input, .scheduleTable--row:nth-child(even) input, .routineTable--row:nth-child(even) input {
   background-color: #4f4f4f;
 }
 
-.checksheetTable--row:nth-child(odd), .scheduleTable--row:nth-child(odd), .checksheetTable--row:nth-child(odd) input, .scheduleTable--row:nth-child(odd) input {
+.checksheetTable--row:nth-child(odd), .scheduleTable--row:nth-child(odd), .routineTable--row:nth-child(odd), .checksheetTable--row:nth-child(odd) input, .scheduleTable--row:nth-child(odd) input, .routineTable--row:nth-child(odd) input {
   background-color: #303030;
 }
 
-.checksheetTable--row:first-child, .scheduleTable--row:first-child, .checksheetTable--row:first-child input, .scheduleTable--row:first-child input {
+.checksheetTable--row:first-child, .scheduleTable--row:first-child, .routineTable--row:first-child, .checksheetTable--row:first-child input, .scheduleTable--row:first-child input, .routineTable--row:first-child input {
   background-color: #222222;
 }
 
-.checksheetTable--row input, .scheduleTable--row input {
+.checksheetTable--row input, .scheduleTable--row input, .routineTable--row input {
   color: #FFFFFF;
 }
 
-.scheduleTable--row:first-child {
+.scheduleTable--row:first-child, .routineTable--row:first-child {
   font-weight: bold;
 }
 
-.scheduleTable--cell, .scheduleTable--titleCell {
+.scheduleTable--cell, .scheduleTable--titleCell, .routineTable--titleCell, .routineTable--cell {
   padding: 6px;
 }
 
-.scheduleTable--titleCell {
+.scheduleTable--titleCell, .routineTable--titleCell {
   cursor: pointer;
 }
 
-.scheduleTable--row:hover:not(:first-child) {
+.scheduleTable--row:hover:not(:first-child), .routineTable--row:hover:not(:first-child) {
   background-color: #1a1a1a;
   cursor: pointer;
 }
@@ -164,12 +168,13 @@ pre {
 
 /* loading spinner */
 .spinner-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   height: 300px;
   margin-top: 50px;
-  position: fixed;
-  z-index: 9999999;
-  left: 0;
-  top: 0;
+  z-index: 99999;
 }
 
 @-webkit-keyframes spin {

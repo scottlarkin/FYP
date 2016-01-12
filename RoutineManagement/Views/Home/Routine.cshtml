@@ -1,57 +1,69 @@
 ﻿<br />
 <div ng-controller="CompleteRoutine">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="row">
-                <h2 class="col-lg-10">Routine Name: {{routine.Name}}</h2>
-            </div>
-            <div class="row">
-                <span class="col-lg-2">Routine Description: </span>
-                <pre class="col-lg-10">{{routine.Description}}</pre>
-            </div>
-           
-            <div class="row" ng-repeat="Checksheet in routine.Checksheets">
-                <br />
-                <h3>{{Checksheet.Name}}</h3>
 
-                <table class="checksheetTable">
 
-                    <tr class="checksheetTable--row" ng-repeat="Record in Checksheet.Records" ng-if="$index < 1">
-                        <td>
-                            <p>{{Record.Name}}<p/>
-                        </td>
-                        <td ng-repeat="Field in Checksheet.Fields">
-                            <p>{{Field.Name}}</p>
-                        </td>
-                    </tr>
-
-                    <tr class="checksheetTable--row" ng-repeat="Record in Checksheet.Records" ng-if="$index > 0">
-                        <td>
-                           
-                            <p>{{Record.Name}}</p>
-                        </td>
-                        <td ng-repeat="FieldValue in Record.FieldValues">
-                            <input class="js-input checksheetTable--fieldInput"
-                                   type="{{fieldTypes[Checksheet.Fields[$index].TypeID - 1].HtmlType}}"
-                                   step="any"
-                                   ng-checked="FieldValue.Value === 'True' || FieldValue.Value === true"
-                                   ng-model="FieldValue.Value"
-                                   ng-if="FieldValue.Editable"
-                                   
-                                   ng-click="t($parent.$parent.$index, $parent.$index, $index);" />
-
-                            <p ng-if="!FieldValue.Editable">{{FieldValue.Value}}</p>
-
-                        </td>
-                    </tr>
-                </table>
-            </div>
+    <div class="js-spinner spinner-wrap">
+        <div class="cube">
+            <i class="front"></i>
+            <i class="back"></i>
+            <i class="left"></i>
+            <i class="right"></i>
         </div>
+        <span class="text">Loading</span>
     </div>
 
-    <input type="button" value="Save" ng-click="SaveRoutine()" />
-    <input type="button" value="Complete" />
+    <div ng-if="loading === false" ng-cloak>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <h2 class="col-lg-10">Routine Name: {{routine.Name}}</h2>
+                </div>
+                <div class="row">
+                    <span class="col-lg-2">Routine Description: </span>
+                    <pre class="col-lg-10">{{routine.Description}}</pre>
+                </div>
 
+                <div class="row" ng-repeat="(cidx, Checksheet) in routine.Checksheets">
+                    <br />
+                    <h3>{{Checksheet.Name}}</h3>
+
+                    <table class="checksheetTable">
+
+                        <tr class="checksheetTable--row" ng-repeat="Record in Checksheet.Records" ng-if="$index < 1">
+                            <td>
+                                <p>{{Record.Name}}<p />
+                            </td>
+                            <td ng-repeat="Field in Checksheet.Fields">
+                                <p>{{Field.Name}}</p>
+                            </td>
+                        </tr>
+
+                        <tr class="checksheetTable--row" ng-repeat="(ridx, Record) in Checksheet.Records" ng-if="$index > 0">
+                            <td>
+
+                                <p>{{Record.Name}}</p>
+                            </td>
+                            <td ng-repeat="FieldValue in Record.FieldValues">
+                                <input class="js-input checksheetTable--fieldInput"
+                                       type="{{fieldTypes[Checksheet.Fields[$index].TypeID - 1].HtmlType}}"
+                                       step="any"
+                                       ng-checked="FieldValue.Value === 'True' || FieldValue.Value === true"
+                                       ng-model="FieldValue.Value"
+                                       ng-if="FieldValue.Editable"
+                                       ng-click="CheckboxClick($index, ridx, cidx, $event);" />
+
+                                <p ng-if="!FieldValue.Editable">{{FieldValue.Value}}</p>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <input type="button" value="Save" ng-click="SaveRoutine()" />
+        <input type="button" value="Complete" />
+    </div>
 </div>
 <script>
     var scheduleID = @ViewBag.ScheduleID

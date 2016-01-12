@@ -1,78 +1,108 @@
 ﻿<br />
 <div ng-controller="CreateRoutine">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="row">
-                <span class="col-lg-2">Routine Name: </span>
-                <input id="RoutineNameInput" class="textInput col-lg-10" type="text" ng-model="routine.Name" ng-change="ValidateRoutineName(routine.Name, routine.Area)" />
-                <span> Select Area: </span>
-                <select ng-options="option for option in areas track by option"
-                        ng-model="routine.Area"
-                        ng-change="ValidateRoutineName(routine.Name, routine.Area)"></select>
 
-            </div>
-            <div class="row">
-                <span class="col-lg-2">Routine Description: </span>
-                <textarea class="textInput col-lg-10" ng-model="routine.Description"></textarea>
-            </div>
-            <div class="row">
-                <input type="button" value="Add Checksheet" ng-click="AddChecksheetClick()" />
-            </div>
-            <div class="row" ng-repeat="Checksheet in routine.Checksheets">
-                <br />
-                <input class="textInput" type="text" ng-model="Checksheet.Name" />
-                <br />
-                <br />
-                <input type="button" value="Add Record" ng-click="AddRecordClick(Checksheet)" />
-                <input type="button" value="Add Field" ng-click="AddFieldClick(Checksheet)" />
-                <input type="button" value="^" ng-click="MoveChecksheetClick($index, -1)" />
-                <input type="button" value="v" ng-click="MoveChecksheetClick($index, 1)" />
+    <div class="js-routineTableWrap">
+        <p> Select a routine to edit, or </p>
+        <input type="button" value="Create a new Routine" ng-click="NewRoutineClick()" />
+        <table class="routineTable">
 
-                <table class="checksheetTable">
+            <tr class="routineTable--row">
+                <td>Routine Name</td>
+                <td>Description</td>
+                <td>Area</td>
+                <td>Created On</td>
+                <td>Created By</td>
 
-                    <tr class="checksheetTable--row" ng-repeat="Record in Checksheet.Records" ng-if="$index < 1">
-                        <td>
-                            <input class="js-input checksheetTable--fieldInput" type="text" ng-model="Record.Name" />
-                        </td>
-                        <td ng-repeat="Field in Checksheet.Fields">
+            </tr>
+            <tr ng-repeat="r in routines" class="routineTable--row"
+                ng-click="RoutineTableRowClick(r.ID)">
+                <td>{{r.Name}}</td>
+                <td>{{r.Description}}</td>
+                <td>{{r.Area}}</td>
+                <td>{{r.CreatedOn}}</td>
+                <td>{{r.CreatedBy}}</td>
 
-                            <input class="js-input checksheetTable--fieldInput" type="text" ng-model="Field.Name" />
-                            <div>
-                                <input class="checksheetTable--deleteButton" type="button" value="X"
-                                       ng-click="RemoveFieldClick(Checksheet, $index)" ng-if="$index > 0" />
-                            </div>
+            </tr>
+        </table>
 
-                            <div class="checksheetTable--fieldTitle--Dropdown">
-                                <select ng-options="option.Name for option in fieldTypes track by option.ID"
-                                        ng-model="Field.Type"
-                                        ng-change="UpdateTypeID(Field)"></select>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr class="checksheetTable--row" ng-repeat="Record in Checksheet.Records" ng-if="$index > 0">
-                        <td>
-                            <input class="checksheetTable--deleteButton" type="button" value="X"
-                                   ng-click="RemoveRecordClick(Checksheet, $index)" ng-if="$index > 1" />
-                            <input class="js-input checksheetTable--fieldInput" type="text" ng-model="Record.Name" />
-                        </td>
-                        <td ng-repeat="FieldValue in Record.FieldValues">
-                            <input class="js-input checksheetTable--fieldInput"
-                                   type="{{Checksheet.Fields[$index].Type.HtmlType}}"
-                                   step="any"
-                                   ng-model="FieldValue.Value"
-                                   ng-disabled="Checksheet.Fields[$index].Type.HtmlType === 'checkbox'" />
-                        </td>
-                    </tr>
-
-                </table>
-
-            </div>
-
-        </div>
     </div>
-    <div class="row">
-        <input type="button" value="Save Routine" ng-click="SaveRoutineClick()" />
+
+    <div class="js-routineWrap hidden">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <span class="col-lg-2">Routine Name: {{routine.ID}} </span>
+                    <input id="RoutineNameInput" class="textInput col-lg-10" type="text" ng-model="routine.Name" ng-change="ValidateRoutineName(routine.Name, routine.Area)" />
+                    <span> Select Area: </span>
+                    <select ng-options="option for option in areas track by option"
+                            ng-model="routine.Area"
+                            ng-change="ValidateRoutineName(routine.Name, routine.Area)"></select>
+
+                </div>
+                <div class="row">
+                    <span class="col-lg-2">Routine Description: </span>
+                    <textarea class="textInput col-lg-10" ng-model="routine.Description"></textarea>
+                </div>
+                <div class="row">
+                    <input type="button" value="Add Checksheet" ng-click="AddChecksheetClick()" />
+                </div>
+                <div class="row" ng-repeat="Checksheet in routine.Checksheets">
+                    <br />
+                    <input class="textInput" type="text" ng-model="Checksheet.Name" />
+                    <br />
+                    <br />
+                    <input type="button" value="Add Record" ng-click="AddRecordClick(Checksheet)" />
+                    <input type="button" value="Add Field" ng-click="AddFieldClick(Checksheet)" />
+                    <input type="button" value="^" ng-click="MoveChecksheetClick($index, -1)" />
+                    <input type="button" value="v" ng-click="MoveChecksheetClick($index, 1)" />
+
+                    <table class="checksheetTable">
+
+                        <tr class="checksheetTable--row" ng-repeat="Record in Checksheet.Records" ng-if="$index < 1">
+                            <td>
+                                <input class="js-input checksheetTable--fieldInput" type="text" ng-model="Record.Name" />
+                            </td>
+                            <td ng-repeat="Field in Checksheet.Fields">
+
+                                <input class="js-input checksheetTable--fieldInput" type="text" ng-model="Field.Name" />
+                                <div>
+                                    <input class="checksheetTable--deleteButton" type="button" value="X"
+                                           ng-click="RemoveFieldClick(Checksheet, $index)" ng-if="$index > 0" />
+                                </div>
+
+                                <div class="checksheetTable--fieldTitle--Dropdown">
+                                    <select ng-options="option.Name for option in fieldTypes track by option.ID"
+                                            ng-model="Field.Type"
+                                            ng-change="UpdateTypeID(Field)"></select>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="checksheetTable--row" ng-repeat="Record in Checksheet.Records" ng-if="$index > 0">
+                            <td>
+                                <input class="checksheetTable--deleteButton" type="button" value="X"
+                                       ng-click="RemoveRecordClick(Checksheet, $index)" ng-if="$index > 1" />
+                                <input class="js-input checksheetTable--fieldInput" type="text" ng-model="Record.Name" />
+                            </td>
+                            <td ng-repeat="FieldValue in Record.FieldValues">
+                                <input class="js-input checksheetTable--fieldInput"
+                                       type="{{fieldTypes[Checksheet.Fields[$index].TypeID - 1].HtmlType}}"
+                                       step="any"
+                                       ng-model="FieldValue.Value"
+                                       ng-disabled="Checksheet.Fields[$index].Type.HtmlType === 'checkbox'" 
+                                       />
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <input type="button" value="Save Routine" ng-click="SaveRoutineClick()" />
+        </div>
     </div>
 </div>
 <script>

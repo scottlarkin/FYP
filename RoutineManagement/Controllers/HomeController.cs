@@ -31,6 +31,21 @@ namespace RoutineManagement.Controllers
             return View();
         }
 
+        public string GetNotifications()
+        {
+            return Notification.GetNotificationsForUser("scott");
+        }
+
+        public int GetUserPrivilege()
+        {
+            return UserInfo.GetPrivilege();
+        }
+
+        public string GetUserName()
+        {
+            return UserInfo.GetUserName();
+        }
+
         public void SaveRoutine(AgendaRoutineModel Routine)
         {
             Routine.Save();

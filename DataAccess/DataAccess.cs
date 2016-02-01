@@ -5,9 +5,53 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using System.Threading.Tasks;
 
 namespace DataAccess
 {
+
+    public class MongoDB
+    {
+        protected static IMongoClient client;
+        protected static IMongoDatabase database;
+
+        public MongoDB(string db)
+        {
+            client = new MongoClient();
+            database = client.GetDatabase(db);
+        }
+
+        public void Insert(string collection, BsonDocument item)
+        {
+            database.GetCollection<BsonDocument>(collection).InsertOne(item);
+        }
+
+        public List<BsonDocument> Get(string collection, BsonDocument filter)
+        {
+            var col = database.GetCollection<BsonDocument>(collection);
+
+            var ret = col.Find<BsonDocument>(filter);
+
+            List<BsonDocument> h = ret.ToList<BsonDocument>();
+
+            return h;
+        }
+
+        public void update(string collection, BsonDocument filter, BsonDocument replacement)
+        {
+
+            //database.GetCollection<BsonDocument>(collection).DeleteOne(filter);
+            //database.GetCollection<BsonDocument>(collection).InsertOne(replacement);
+
+            database.GetCollection<BsonDocument>(collection).ReplaceOne(filter, replacement);
+
+        }
+
+    }
+
+
     public class SqlServer : IDisposable
     {
 
@@ -34,7 +78,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-               // throw ex;
+                // throw ex;
                 return false;
             }
 
@@ -136,7 +180,7 @@ namespace DataAccess
                 {
                     command.ExecuteNonQuery();
                 }
-                catch(SqlException e)
+                catch (SqlException e)
                 {
                     int ln = e.LineNumber;
                 }
@@ -155,7 +199,7 @@ namespace DataAccess
                 }
                 catch
                 {
-                    
+
                 }
             }
         }

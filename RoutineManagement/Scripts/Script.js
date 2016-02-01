@@ -14,6 +14,84 @@ function GetUniqueNumber() {
 var RoutineManagement = angular.module("RoutineManagement", []);
 
 
+RoutineManagement.controller("NavBar", function ($scope) {
+
+    $.ajax({
+        url: "http://localhost:57425/Home/GetUserPrivilege",
+        type: "GET",
+        contentType: 'application/json;',
+        dataType: 'json',
+
+        success: function (data) {
+            $scope.$apply(function () {
+                $scope.privilege = data;
+            });
+        }
+
+    });
+
+    $.ajax({
+        url: "http://localhost:57425/Home/GetUserName",
+        type: "GET",
+        contentType: 'application/json;',
+        dataType: 'json',
+
+        success: function (data) {
+            $scope.$apply(function () {
+                $scope.userName = data;
+            });
+        }
+
+    });
+
+    $scope.notifications = Array();
+
+    var longPollNotifications = function () {
+
+        var response = "null";
+
+        $.ajax({
+            url: "http://localhost:57425/Home/GetNotifications",
+            type: "GET",
+            contentType: 'application/json;',
+            dataType: 'text',
+            timeout: 10000,
+            data: { name: $scope.userName },
+
+            success: function (data) {
+                response = data;
+                console.log(JSON.parse(data));
+                //console.log("response is -    " + JSON.parse(response));
+               
+            },
+            complete: function (data) {
+
+               
+
+                if (response != "null") {
+
+                    console.log("response:   " + data);
+
+                    $scope.$apply(function () {
+                        $scope.notifications.push(response);
+                    });
+                }
+
+                console.log($scope.notifications);
+
+                longPollNotifications();
+            },
+            error: function (data) {
+               
+            }
+        });
+    }
+
+    longPollNotifications();
+
+});
+
+
 RoutineManagement.controller("Schedule", function ($scope) {
 
     var refreshSchedule = function () {
@@ -321,6 +399,11 @@ RoutineManagement.controller("CreateRoutine", function ($scope) {
         $('.js-routineWrap').removeClass('hidden');
     }
 
+    var ShowTable = function () {
+        $('.js-routineWrap').addClass('hidden');
+        $('.js-routineTableWrap').removeClass('hidden');
+    }
+
     LoadRoutines();
 
     $scope.fieldTypes = document.ChecksheetLib.FieldTypes;
@@ -358,10 +441,13 @@ RoutineManagement.controller("CreateRoutine", function ($scope) {
             error: function (data) {
                 console.log("failed to load selected routine");
                 console.log(data);
+            },
+            complete: function () {
+                ShowRoutine();
             }
         });
 
-        ShowRoutine();
+        
     }
 
     var SetFieldTypes = function () {
@@ -374,7 +460,13 @@ RoutineManagement.controller("CreateRoutine", function ($scope) {
         }
     }
 
-    $scope.UpdateTypeID = function (Field) {
+    $scope.UpdateTypeID = function (Field, csIdx, fIdx) {
+
+        for (var i = 1; i < $scope.routine.Checksheets[csIdx].Records.length; i++) {
+
+            $scope.routine.Checksheets[csIdx].Records[i].FieldValues[fIdx].Value = '';
+        }
+
         Field.TypeID = Field.Type.ID;
     }
 
@@ -440,6 +532,7 @@ RoutineManagement.controller("CreateRoutine", function ($scope) {
         }
 
         document.ChecksheetLib.SaveRoutine($scope.routine);
+        ShowTable();
     }
 
     $scope.ValidateRoutineName = function (rn, a) {

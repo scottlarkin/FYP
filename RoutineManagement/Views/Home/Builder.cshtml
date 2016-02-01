@@ -31,12 +31,13 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="row">
-                    <span class="col-lg-2">Routine Name: {{routine.ID}} </span>
+                    <span class="col-lg-2">Routine Name: </span>
                     <input id="RoutineNameInput" class="textInput col-lg-10" type="text" ng-model="routine.Name" ng-change="ValidateRoutineName(routine.Name, routine.Area)" />
                     <span> Select Area: </span>
                     <select ng-options="option for option in areas track by option"
                             ng-model="routine.Area"
-                            ng-change="ValidateRoutineName(routine.Name, routine.Area)"></select>
+                            ng-change="ValidateRoutineName(routine.Name, routine.Area)"
+                            ng-disabled="routine.ID > 0"></select>
 
                 </div>
                 <div class="row">
@@ -46,7 +47,7 @@
                 <div class="row">
                     <input type="button" value="Add Checksheet" ng-click="AddChecksheetClick()" />
                 </div>
-                <div class="row" ng-repeat="Checksheet in routine.Checksheets">
+                <div class="row" ng-repeat="(csIdx, Checksheet) in routine.Checksheets">
                     <br />
                     <input class="textInput" type="text" ng-model="Checksheet.Name" />
                     <br />
@@ -73,7 +74,7 @@
                                 <div class="checksheetTable--fieldTitle--Dropdown">
                                     <select ng-options="option.Name for option in fieldTypes track by option.ID"
                                             ng-model="Field.Type"
-                                            ng-change="UpdateTypeID(Field)"></select>
+                                            ng-change="UpdateTypeID(Field, csIdx, $index)"></select>
                                 </div>
                             </td>
                         </tr>

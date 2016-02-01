@@ -1,4 +1,6 @@
 ﻿using DataAccess;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -42,6 +44,18 @@ namespace RoutineManagement.Models
 
                 database.ExecuteProcedure("dbo.ScheduleRoutine", parameters);
             }
+
+            BsonDocument d = new BsonDocument()
+                                .Add("id", BsonValue.Create(BsonType.ObjectId).ToString())
+                                .Add("date", DateTime.Now.ToString())
+                                .Add("user", AssignedUser.Replace("'", "''"))
+                                .Add("text", "You have been allocated a Routine to complete")
+                                .Add("seen", "false");
+
+
+            DataAccess.MongoDB mdb = new DataAccess.MongoDB("RoutineManagement");
+
+            mdb.Insert("Notification", d);
         }
 
         public int ScheduleID { get; set; }

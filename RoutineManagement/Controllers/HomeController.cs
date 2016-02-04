@@ -31,6 +31,11 @@ namespace RoutineManagement.Controllers
             return View();
         }
 
+        public string GetNewNotifications()
+        {
+            return Notification.GetNewNotificationsForUser("scott");
+        }
+
         public string GetNotifications()
         {
             return Notification.GetNotificationsForUser("scott");

@@ -50,7 +50,8 @@ namespace RoutineManagement.Models
                                 .Add("date", DateTime.Now.ToString())
                                 .Add("user", AssignedUser.Replace("'", "''"))
                                 .Add("text", "You have been allocated a Routine to complete")
-                                .Add("seen", "false");
+                                .Add("seen", "false")
+                                .Add("sent", "false");
 
 
             DataAccess.MongoDB mdb = new DataAccess.MongoDB("RoutineManagement");

@@ -10,43 +10,29 @@ namespace RoutineManagement.Models
     public class Notification
     {
 
-        public static string GetNotificationsForUser(string user)
-        {
+        private static const string NOTIFICATION_COL_NAME = "Notification";
 
+        public static string GetNewNotificationsForUser(string user)
+        {
+            DataAccess.MongoDB mdb = new DataAccess.MongoDB("RoutineManagement");
             List<BsonDocument> notifications = new List<BsonDocument>();
             string ret = "null";
-
-            for (int i = 0; i < 100; i++)
+          
+            for (int i = 0; i < 300; i++)
             {
 
-                DataAccess.MongoDB mdb = new DataAccess.MongoDB("RoutineManagement");
-
-                notifications = mdb.Get("Notification", new BsonDocument("user", user).Add("seen", "false"));
+                notifications = mdb.Get(NOTIFICATION_COL_NAME, new BsonDocument("user", user).Add("sent", "false"));
 
                 if (notifications.Count > 0)
                 {
-                    ret = "[";
-
-                    foreach (var item in notifications)
+                    ret = ParseNotifications(notifications, (item) =>
                     {
-                        ret += item.ToJson(new JsonWriterSettings { OutputMode = JsonOutputMode.Strict });
-
-                        if (item != notifications.Last() && notifications.Count > 1)
-                        {
-                            ret += ",";
-                        }
-
 
                         BsonDocument updated = (BsonDocument)item.Clone();
-                        updated["seen"] = "true";
+                        updated["sent"] = "true";
+                        mdb.Update(NOTIFICATION_COL_NAME, item, updated);
 
-
-                        mdb.update("Notification",item, updated);
-
-
-                    }
-                    notifications = mdb.Get("Notification", new BsonDocument("user", user).Add("seen", "false"));
-                    ret += "]";
+                    });
 
                     break;
                 }
@@ -56,5 +42,48 @@ namespace RoutineManagement.Models
 
             return ret;
         }
+
+        public static string GetNotificationsForUser(string user)
+        {
+
+            List<BsonDocument> notifications = new List<BsonDocument>();
+            DataAccess.MongoDB mdb = new DataAccess.MongoDB("RoutineManagement");
+
+            notifications = mdb.Get(NOTIFICATION_COL_NAME, new BsonDocument("user", user).Add("sent", "true"));
+
+            return ParseNotifications(notifications);
+        }
+
+
+        //convert notification list to JSON string
+        private static string ParseNotifications(List<BsonDocument> notifications, Action<BsonDocument> perNotificationAction = null)
+        {
+            string ret = "null";
+
+            if (notifications.Count > 0)
+            {
+                ret = "[";
+
+                foreach (var item in notifications)
+                {
+                    ret += item.ToJson(new JsonWriterSettings { OutputMode = JsonOutputMode.Strict });
+
+                    if (item != notifications.Last() && notifications.Count > 1)
+                        ret += ",";
+                    
+
+                    if (perNotificationAction != null)
+                        perNotificationAction((BsonDocument)item);
+
+                }
+
+                ret += "]";
+
+            }
+
+            return ret;
+        }
+
+
     }
 }

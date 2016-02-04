@@ -39,11 +39,8 @@ namespace DataAccess
             return h;
         }
 
-        public void update(string collection, BsonDocument filter, BsonDocument replacement)
+        public void Update(string collection, BsonDocument filter, BsonDocument replacement)
         {
-
-            //database.GetCollection<BsonDocument>(collection).DeleteOne(filter);
-            //database.GetCollection<BsonDocument>(collection).InsertOne(replacement);
 
             database.GetCollection<BsonDocument>(collection).ReplaceOne(filter, replacement);
 

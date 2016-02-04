@@ -46,48 +46,29 @@ RoutineManagement.controller("NavBar", function ($scope) {
 
     $scope.notifications = Array();
 
-    var longPollNotifications = function () {
-
-        var response = "null";
-
+    (function poll() {
         $.ajax({
-            url: "http://localhost:57425/Home/GetNotifications",
+            url: "http://localhost:57425/Home/GetNewNotifications",
             type: "GET",
             contentType: 'application/json;',
             dataType: 'text',
-            timeout: 10000,
             data: { name: $scope.userName },
-
             success: function (data) {
+
+
                 response = data;
-                console.log(JSON.parse(data));
-                //console.log("response is -    " + JSON.parse(response));
-               
-            },
-            complete: function (data) {
-
-               
-
+                console.log(response);
                 if (response != "null") {
-
-                    console.log("response:   " + data);
-
                     $scope.$apply(function () {
                         $scope.notifications.push(response);
                     });
                 }
-
-                console.log($scope.notifications);
-
-                longPollNotifications();
             },
-            error: function (data) {
-               
-            }
+            dataType: "json",
+            complete: poll,
+            timeout: 30000 //30 seconds
         });
-    }
-
-    longPollNotifications();
+    })();
 
 });
 

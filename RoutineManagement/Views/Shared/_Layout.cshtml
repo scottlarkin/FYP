@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" /> 
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
@@ -9,43 +9,66 @@
 </head>
 
 <body ng-app="RoutineManagement">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="~/Scripts/Script.js"></script>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container" ng-controller="NavBar">
-          
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Routine Checksheet Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+        <div ng-controller="NavBar">
+            <div class="container">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Routine Checksheet Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Schedule", "Index", "Home", new { area = "" }, null)</li>
+                        <li ng-if="privilege > 2">@Html.ActionLink("Builder", "Builder", "Home", new { area = "" }, null)</li>
+                        <li ng-if="privilege == 999">@Html.ActionLink("Admin", "Admin", "Home", new { area = "" }, null)</li>
+                    </ul>
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Schedule", "Index", "Home", new { area = "" }, null)</li>
-                    <li ng-if="privilege > 2">@Html.ActionLink("Builder", "Builder", "Home", new { area = "" }, null)</li>
-                    <li ng-if="privilege == 999">@Html.ActionLink("Admin", "Admin", "Home", new { area = "" }, null)</li>
-                </ul>
+
+            <div class="notificationWrap js-notificationWrap">
+                <div class="notificationBell" ng-click="NotificationBellClick()" ng-class="newNotifications > 0 ? 'newNotification' : '' ">
+                    &#x1f514;
+                    <span ng-bind="newNotifications" ng-if="newNotifications>0"></span>
+                </div>
+
+                <div class="notificationOverlay js-notificationOverlay hidden" ng-class="showNotifications ? '' : 'hidden'">
+                    <p class="notificationOverlayTitle">
+                        Notifications:
+                        <span class="notificationOverlayClear" ng-click="ClearNotificationClick()">Clear Notifications</span>
+                    </p>
+
+                    <div ng-repeat="notification in notifications" class="notification">
+                        <p><span class="newNotification" ng-if="notification.seen === 'false'">* NEW *</span>{{notification.date}}</p>
+                        <p>{{notification.text}}</p>
+
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
     <div class="container body-content">
-       
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>@DateTime.Now.Year - Scott Larkin - Final Year Project</p>
-        </footer>
+        <div>
+            @RenderBody()
+        </div>
+
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/Checksheet.js"></script>
     @RenderSection("scripts", required: false)
-    <script src="~/Scripts/Script.js"></script>
-
+    <script src="~/Scripts/NavBar.js"></script>
 
 </body>
 </html>

@@ -7,11 +7,11 @@ using System.Data.SqlClient;
 using System.Data;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
 
+    //DAL for interacting with mongoDB... Didnt have much time to do this so its a bit bare
     public class MongoDB
     {
         protected static IMongoClient client;
@@ -23,31 +23,49 @@ namespace DataAccess
             database = client.GetDatabase(db);
         }
 
+
+        //basic insert function
         public void Insert(string collection, BsonDocument item)
         {
             database.GetCollection<BsonDocument>(collection).InsertOne(item);
         }
 
-        public List<BsonDocument> Get(string collection, BsonDocument filter)
+        //get all documents in a collection which match the filter, with options to order the result based on the name of a field in the found documents
+        public List<BsonDocument> Get(string collection, BsonDocument filter, string OrderDescending = "", string OrderAscending = "")
         {
             var col = database.GetCollection<BsonDocument>(collection);
 
             var ret = col.Find<BsonDocument>(filter);
 
+            if (OrderDescending != "")
+            {
+               ret.SortByDescending(bson => bson[OrderDescending]);
+            }
+
+            if (OrderAscending != "")
+            {
+                ret.SortByDescending(bson => bson[OrderAscending]);
+            }
+           
             List<BsonDocument> h = ret.ToList<BsonDocument>();
 
             return h;
         }
 
+        //replace all documents in a collection, which match the filter, with another document.
         public void Update(string collection, BsonDocument filter, BsonDocument replacement)
         {
-
             database.GetCollection<BsonDocument>(collection).ReplaceOne(filter, replacement);
+        }
 
+
+        //remove all documents in a collection which match the filter.
+        public void Delete(string collection, BsonDocument filter)
+        {
+            database.GetCollection<BsonDocument>(collection).DeleteMany(filter);
         }
 
     }
-
 
     public class SqlServer : IDisposable
     {

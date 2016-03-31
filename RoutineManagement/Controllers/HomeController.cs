@@ -12,6 +12,14 @@ namespace RoutineManagement.Controllers
             ViewBag.Title = "Schedule";
 
             return View();
+        
+        }
+
+        public ActionResult Admin()
+        {
+            ViewBag.Title = "Admin";
+
+            return View();
         }
 
         public ActionResult Routine(int scheduleID)
@@ -31,16 +39,6 @@ namespace RoutineManagement.Controllers
             return View();
         }
 
-        public string GetNewNotifications()
-        {
-            return Notification.GetNewNotificationsForUser("scott");
-        }
-
-        public string GetNotifications()
-        {
-            return Notification.GetNotificationsForUser("scott");
-        }
-
         public int GetUserPrivilege()
         {
             return UserInfo.GetPrivilege();
@@ -51,37 +49,11 @@ namespace RoutineManagement.Controllers
             return UserInfo.GetUserName();
         }
 
-        public void SaveRoutine(AgendaRoutineModel Routine)
+        public string GetAllUserNames()
         {
-            Routine.Save();
-        }
+            List<string> users = UserInfo.GetAllUserNames();
 
-        public void SaveScheduledRoutine(AgendaRoutineModel Routine, int ScheduleID)
-        {
-            Routine.SaveScheduledRoutine(ScheduleID);
-        }
-
-        public string LoadRoutine(int RoutineID)
-        {
-            AgendaRoutineModel routine = new AgendaRoutineModel();
-            routine.Load(RoutineID);
-
-            return new JavaScriptSerializer().Serialize(Json(routine).Data);
-        }
-
-        public string GetRoutineList()
-        {
-            List<AgendaRoutineModel> rl = AgendaRoutineModel.GetRoutineList();
-
-            return new JavaScriptSerializer().Serialize(Json(rl).Data);
-        }
-
-        public string LoadScheduledRoutine(int ScheduleID)
-        {
-            AgendaRoutineModel routine = new AgendaRoutineModel();
-            routine.LoadScheduledRoutine(ScheduleID);
-
-            return new JavaScriptSerializer().Serialize(Json(routine).Data);
+            return new JavaScriptSerializer().Serialize(Json(users).Data);
         }
 
         public string GetAreas()
@@ -98,33 +70,11 @@ namespace RoutineManagement.Controllers
             return new JavaScriptSerializer().Serialize(Json(teams).Data);
         }
 
-        public string GetRoutinesByArea(string AreaName)
-        {
-            List<string> routines = ScheduleModel.GetRoutinesByArea(AreaName);
-
-            return new JavaScriptSerializer().Serialize(Json(routines).Data);
-        }
-
         public string GetUsersByTeam(string TeamName)
         {
             List<string> users = ScheduleModel.GetUsersByTeam(TeamName);
 
             return new JavaScriptSerializer().Serialize(Json(users).Data);
-        }
-
-        public string LoadSchedule()
-        {
-
-            ScheduleModel schedule = new ScheduleModel();
-
-            schedule.LoadSchedule();
-
-            return new JavaScriptSerializer().Serialize(Json(schedule).Data);
-        }
-
-        public void ScheduleRoutine(ScheduledRoutine SR)
-        {
-            SR.SaveScheduledRoutine();
         }
 
         public string LoadComments()
@@ -135,17 +85,6 @@ namespace RoutineManagement.Controllers
         public void SaveComment()
         {
 
-        }
-
-        public string ValidateRoutineName(string routineName, string area)
-        {
-            return AgendaRoutineModel.ValidateRoutineName(routineName, area);
-        }
-
-
-        public string GetFieldTypes()
-        {
-            return new JavaScriptSerializer().Serialize(Json(AgendaRoutineModel.GetFieldTypes()).Data);
         }
         
     }

@@ -17,6 +17,7 @@ namespace RoutineManagement.Models
         public string Area { get; set; }
         public string CreatedOn { get; set; }
         public string CreatedBy { get; set; }
+        public string Completed { get; set; }
 
         public static List<AgendaRoutineModel> GetRoutineList()
         {
@@ -103,7 +104,7 @@ namespace RoutineManagement.Models
                     Name = routine.Tables[0].Rows[0]["Name"].ToString();
                     Description = routine.Tables[0].Rows[0]["Description"].ToString();
                     Area = routine.Tables[0].Rows[0]["Area"].ToString();
-
+                    
                     foreach (DataRow csRow in checksheets.Rows)
                     {
                         int numFields = int.Parse(csRow["FieldCount"].ToString());
@@ -149,6 +150,19 @@ namespace RoutineManagement.Models
         }
 
 
+        public static void CompleteScheduledRoutine(int ScheduleID)
+        {
+
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@ScheduleID", SqlDbType.Int) { Value = ScheduleID });
+
+            using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                database.ExecuteProcedure("dbo.ScheduledRoutineComplete", parameters);
+            }
+
+        }
+
         public void LoadScheduledRoutine(int ScheduleID)
         {
             //execute procedure to get a routine and convert data tables to C# model
@@ -172,6 +186,7 @@ namespace RoutineManagement.Models
                     this.ID = int.Parse(routine.Tables[0].Rows[0]["ID"].ToString());
                     Name = routine.Tables[0].Rows[0]["Name"].ToString();
                     Description = routine.Tables[0].Rows[0]["Description"].ToString();
+                    Completed = routine.Tables[5].Rows[0]["Completed"].ToString();
 
                     foreach (DataRow csRow in checksheets.Rows)
                     {

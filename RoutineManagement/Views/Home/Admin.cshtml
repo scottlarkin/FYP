@@ -1,0 +1,139 @@
+﻿
+<br />
+<h1>Admin Area</h1>
+<div ng-controller="Admin">
+
+    <div class="js-spinner spinner-wrap" ng-if="Loaded === false">
+        <div class="cube">
+            <i class="front"></i>
+            <i class="back"></i>
+            <i class="left"></i>
+            <i class="right"></i>
+        </div>
+        <span class="text">Loading</span>
+    </div>
+
+    <div ng-if="Loaded === true" ng-cloak>
+        <h1 ng-show="privilege != 999" style="color:red"> Access Denied </h1>
+
+        <div ng-show="privilege == 999">
+
+            <input type="button" value="Create new Area" ng-click="CreateAreaClick()" />
+            <input type="button" value="Create new Team" ng-click="CreateTeamClick()" />
+            <input type="button" value="Edit user Privilege" ng-click="EditUserPrivilegeClick()" />
+
+            <br />
+
+            <div ng-show="ShowAddArea === true">
+
+                <br />
+                New area name:
+                <input class="js-newAreaName" type="text" />
+
+                Parent Area:
+                <select ng-options="name for name in areas"
+                        ng-model="SelectedArea"></select>
+
+                <input type="button" value="Add Area" ng-click="AddAreaClick()" />
+
+            </div>
+
+            <div ng-show="ShowAddTeam === true">
+                <br />
+                New team name:
+                <input class="js-newTeamName" type="text" />
+
+                <input type="button" value="Add Team" ng-click="AddTeamClick()" />
+
+            </div>
+
+            <div ng-show="ShowEditUser === true">
+                <br />
+
+                <div style="width:100%">
+                    <div style="float:left; width:20%">
+                        <p>Select a User to edit.</p>
+
+                        <table class="scheduleTable">
+
+                            <tr class="scheduleTable--row">
+                                <td class="scheduleTable--titleCell">User Name</td>
+                            </tr>
+
+                            <tr class="scheduleTable--row" ng-repeat="User in Users">
+                                <td class="scheduleTable--cell" ng-click="UserClick(User)">{{User}}</td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+                    <div style="float:left;width:80%" ng-hide="SelectedUser === null">
+                        <p>Selected User: {{SelectedUser}}</p>
+
+                        <table class="scheduleTable">
+                            <tr class="scheduleTable--row">
+                                <td>Access Level</td>
+                                <td></td>
+                            </tr>
+
+                            <tr class="scheduleTable--row">
+                                <td>Reader</td>
+                                <td> <input type="radio" ng-checked="AccessLevels['Reader'] === true" ng-click="AccessLevelClick(SelectedUser, 1 )" /></td>
+                            </tr>
+
+                            <tr class="scheduleTable--row">
+                                <td>Writer</td>
+                                <td> <input type="radio" ng-checked="AccessLevels['Writer'] === true" ng-click="AccessLevelClick(SelectedUser, 2 )" /></td>
+                            </tr>
+
+                            <tr class="scheduleTable--row">
+                                <td>Editor</td>
+                                <td> <input type="radio" ng-checked="AccessLevels['Editor'] === true" ng-click="AccessLevelClick(SelectedUser, 3 )" /></td>
+                            </tr>
+
+                            <tr class="scheduleTable--row">
+                                <td>Team Reader</td>
+                                <td> <input type="radio" ng-checked="AccessLevels['TeamReader'] === true" ng-click="AccessLevelClick(SelectedUser, 4 )" /></td>
+                            </tr>
+
+                            <tr class="scheduleTable--row">
+                                <td>Team Writer</td>
+                                <td> <input type="radio" ng-checked="AccessLevels['TeamWriter'] === true" ng-click="AccessLevelClick(SelectedUser, 5 )" /></td>
+                            </tr>
+
+                            <tr class="scheduleTable--row">
+                                <td>Team Editor</td>
+                                <td> <input type="radio" ng-checked="AccessLevels['TeamEditor'] === true" ng-click="AccessLevelClick(SelectedUser, 6 )" /></td>
+                            </tr>
+
+                            <tr class="scheduleTable--row">
+                                <td>Area Reader</td>
+                                <td> <input type="radio" ng-checked="AccessLevels['AreaReader'] === true" ng-click="AccessLevelClick(SelectedUser, 7 )" /></td>
+                            </tr>
+
+                            <tr class="scheduleTable--row">
+                                <td>Area Writer</td>
+                                <td> <input type="radio" ng-checked="AccessLevels['AreaWriter'] === true" ng-click="AccessLevelClick(SelectedUser, 8 )" /></td>
+                            </tr>
+
+                            <tr class="scheduleTable--row">
+                                <td>Area Editor</td>
+                                <td> <input type="radio" ng-checked="AccessLevels['AreaEditor'] === true" ng-click="AccessLevelClick(SelectedUser, 9 )" /></td>
+                            </tr>
+
+                            <tr class="scheduleTable--row">
+                                <td>Admin</td>
+                                <td> <input type="radio" ng-checked="AccessLevels['Admin'] === true" ng-click="AccessLevelClick(SelectedUser, 10 )" /></td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Admin.js"></script>

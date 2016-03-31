@@ -25,7 +25,8 @@ pre {
 .checksheetTable--row, .scheduleTable--row, .routineTable--row {
   color: #FFFFFF;
   height: 40px;
-  padding-right: 10px;
+  padding-left: 10px;
+  margin-left: 10px;
 }
 
 .checksheetTable--row:nth-child(even), .scheduleTable--row:nth-child(even), .routineTable--row:nth-child(even), .checksheetTable--row:nth-child(even) input, .scheduleTable--row:nth-child(even) input, .routineTable--row:nth-child(even) input {
@@ -317,6 +318,93 @@ pre {
   left: 80px;
   color: black;
   font-weight: bolder;
+}
+
+.commentInput {
+  height: 100px;
+  resize: none;
+}
+
+.commentBox, .commentBox--reply {
+  width: 60%;
+  border: solid 1px;
+}
+
+.commentBox--reply {
+  position: relative;
+  left: 5%;
+  width: 55%;
+}
+
+.commentBox--header, .commentBox--replyHeader {
+  height: 20px;
+  background-color: #303030;
+  color: white;
+}
+
+.commentBox--replyHeader {
+  background-color: #4f4f4f;
+}
+
+.notificationWrap {
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  z-index: 9999999;
+}
+
+.notificationBell {
+  color: #d1d1d1;
+  cursor: pointer;
+}
+
+.newNotification {
+  color: red;
+}
+
+.notificationOverlay {
+  position: relative;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  top: 45px;
+  width: 350px;
+  height: 400px;
+  background-color: #222222;
+  color: white;
+  border: solid 2px black;
+  box-shadow: #8b8b8b 5px 5px 10px;
+  overflow-y: scroll;
+}
+
+.notificationOverlayTitle {
+  font-weight: bold;
+  padding-top: 5px;
+  padding-left: 5px;
+  margin-left: -7px;
+  position: fixed;
+  top: 50px;
+  height: 30px;
+  width: 350px;
+  background-color: #222222;
+  border-top: 1px solid #8a8a8a;
+}
+
+.notification {
+  padding-left: 3px;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  border-top: 1px solid black;
+  background-color: #303030;
+}
+
+.notification:nth-child(2n+1) {
+  background-color: #4f4f4f;
+}
+
+.notificationOverlayClear {
+  cursor: pointer;
+  color: #2c77ba;
+  padding-left: 70px;
 }
 
 /*# sourceMappingURL=Styles.css.map */

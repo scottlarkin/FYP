@@ -14,6 +14,9 @@
 
     <div ng-if="loading === false" ng-cloak>
         <div class="row">
+
+            <p ng-hide="routine.Completed !== 'true'" style="color:red"> This Routine Has been completed. Changes may not be made. </p>
+
             <div class="col-lg-12">
                 <div class="row">
                     <h2 class="col-lg-10">Routine Name: {{routine.Name}}</h2>
@@ -40,17 +43,18 @@
 
                         <tr class="checksheetTable--row" ng-repeat="(ridx, Record) in Checksheet.Records" ng-if="$index > 0">
                             <td>
-
                                 <p>{{Record.Name}}</p>
                             </td>
                             <td ng-repeat="FieldValue in Record.FieldValues">
+
                                 <input class="js-input checksheetTable--fieldInput"
                                        type="{{fieldTypes[Checksheet.Fields[$index].TypeID - 1].HtmlType}}"
                                        step="any"
                                        ng-checked="FieldValue.Value === 'True' || FieldValue.Value === true"
                                        ng-model="FieldValue.Value"
                                        ng-if="FieldValue.Editable"
-                                       ng-click="CheckboxClick($index, ridx, cidx, $event);" />
+                                       ng-click="CheckboxClick($index, ridx, cidx, $event);"
+                                       ng-disabled="routine.Completed === 'true'" />
 
                                 <p ng-if="!FieldValue.Editable">{{FieldValue.Value}}</p>
 
@@ -61,10 +65,43 @@
             </div>
         </div>
 
-        <input type="button" value="Save" ng-click="SaveRoutine()" />
-        <input type="button" value="Complete" />
+        <input type="button" value="Save" ng-click="SaveRoutine()" ng-disabled="routine.Completed === 'true'" />
+        <input type="button" value="Complete" ng-click="CompleteRoutine()" ng-disabled="routine.Completed === 'true'" />
+
+        <div>
+
+            <h2>Comments</h2>
+            <br />
+            <div style="height:160px;">
+                <p>Write Comment:</p>
+                <textarea class="col-lg-10 commentInput" ng-model="$parent.commentText"></textarea>
+                <input type="button" value="Post Comment" ng-click="PostCommentClick()" />
+            </div>
+
+            <div ng-repeat ="comment in comments">
+
+                <div class="commentBox">
+                    <div class="commentBox--header">
+                        {{comment.UserName}}   |  {{comment.DateStamp}}    |  <span style="color:#0f6ae8;cursor:pointer" ng-click="ReplyClick(comment.ID)">Reply</span>  |  <span style="color:#0f6ae8;cursor:pointer" ng-click="ToggleReplies(comment.ID)" class="js-toggleText{{comment.ID}}">Hide Replies</span>
+                    </div>
+
+                    {{comment.Text}}
+                </div>
+
+                <div ng-repeat="reply in comment.Replies" class="commentBox--reply js-reply{{reply.ParentID}}">
+                    <div class="commentBox--replyHeader">
+                        {{reply.UserName}}   |  {{reply.DateStamp}}
+                    </div>
+
+                    {{reply.Text}}
+                </div>
+
+            </div>
+
+        </div>
     </div>
 </div>
+<script src="~/Scripts/CompleteRoutine.js"></script>
 <script>
     var scheduleID = @ViewBag.ScheduleID
 </script>

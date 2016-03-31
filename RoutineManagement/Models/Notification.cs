@@ -10,7 +10,7 @@ namespace RoutineManagement.Models
     public class Notification
     {
 
-        private static const string NOTIFICATION_COL_NAME = "Notification";
+        private const string NOTIFICATION_COL_NAME = "Notification";
 
         public static string GetNewNotificationsForUser(string user)
         {
@@ -43,17 +43,42 @@ namespace RoutineManagement.Models
             return ret;
         }
 
+
         public static string GetNotificationsForUser(string user)
         {
 
             List<BsonDocument> notifications = new List<BsonDocument>();
             DataAccess.MongoDB mdb = new DataAccess.MongoDB("RoutineManagement");
 
-            notifications = mdb.Get(NOTIFICATION_COL_NAME, new BsonDocument("user", user).Add("sent", "true"));
+            notifications = mdb.Get(NOTIFICATION_COL_NAME, new BsonDocument("user", user).Add("sent", "true"), "date");
 
             return ParseNotifications(notifications);
         }
 
+
+        public static void ReadNotifications(string user)
+        {
+
+            List<BsonDocument> notifications = new List<BsonDocument>();
+
+            DataAccess.MongoDB mdb = new DataAccess.MongoDB("RoutineManagement");
+
+            notifications = mdb.Get(NOTIFICATION_COL_NAME, new BsonDocument("user", user).Add("seen", "false"));
+
+            foreach(BsonDocument doc in notifications)
+            {
+                BsonDocument updated = (BsonDocument)doc.Clone();
+                updated["seen"] = "true";
+                mdb.Update(NOTIFICATION_COL_NAME, doc , updated);
+            }
+
+        }
+
+        public static void ClearNotifications(string user)
+        {
+            DataAccess.MongoDB mdb = new DataAccess.MongoDB("RoutineManagement");
+            mdb.Delete(NOTIFICATION_COL_NAME, new BsonDocument("user", user) );
+        }
 
         //convert notification list to JSON string
         private static string ParseNotifications(List<BsonDocument> notifications, Action<BsonDocument> perNotificationAction = null)
@@ -71,7 +96,6 @@ namespace RoutineManagement.Models
                     if (item != notifications.Last() && notifications.Count > 1)
                         ret += ",";
                     
-
                     if (perNotificationAction != null)
                         perNotificationAction((BsonDocument)item);
 

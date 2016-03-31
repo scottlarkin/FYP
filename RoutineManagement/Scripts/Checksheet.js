@@ -90,7 +90,7 @@ document.ChecksheetLib =
     SaveRoutine: function (Routine) {
      
         $.ajax({
-            url: "http://localhost:57425/Home/SaveRoutine",
+            url: "http://localhost:57425/Routine/SaveRoutine",
             type: "POST",
             contentType: 'application/json;',
             dataType: 'json',
@@ -117,8 +117,7 @@ document.ChecksheetLib =
         return sheet;
     },
 
-    Init: function () {
-
+    GetAreas: function(){
         $.ajax({
             url: "http://localhost:57425/Home/GetAreas",
             type: "GET",
@@ -133,9 +132,38 @@ document.ChecksheetLib =
             }
 
         });
+    },
+
+   //Angular will not automatically parse a string to a float, and throws an error if i put, for example '12', into a number field. This function converts any number strings to floats
+   FormatRoutine: function (routine) {
+
+        for (var c = 0; c < routine.Checksheets.length; c++) {
+           
+            var Checksheet = routine.Checksheets[c];
+
+            for (var r = 0; r < Checksheet.Records.length; r++) {
+
+                var Record = routine.Checksheets[c].Records[r];
+
+                for (var i = 0; i < Record.FieldValues.length; i++) {
+                    
+                    if (Checksheet.Fields[i].TypeID == 3) {
+                        
+                        Record.FieldValues[i].Value = parseFloat(Record.FieldValues[i].Value);
+                    }
+                }
+            }
+        }
+
+        return routine;
+    },
+
+    Init: function () {
+
+        document.ChecksheetLib.GetAreas();
 
         $.ajax({
-            url: "http://localhost:57425/Home/GetFieldTypes",
+            url: "http://localhost:57425/Routine/GetFieldTypes",
             type: "GET",
             contentType: 'application/json;',
             dataType: 'json',
@@ -150,7 +178,7 @@ document.ChecksheetLib =
         });
 
     }
-    
+
 };
 
 document.ChecksheetLib.Init();

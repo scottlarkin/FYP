@@ -61,19 +61,10 @@ namespace RoutineManagement.Models
                 database.ExecuteProcedure("dbo.ScheduleRoutine", parameters);
             }
 
+            //send notification
             if (AssignedUser != null)
             {
-                BsonDocument d = new BsonDocument()
-                                    .Add("id", BsonValue.Create(BsonType.ObjectId).ToString())
-                                    .Add("date", DateTime.Now.ToString())
-                                    .Add("user", AssignedUser.Replace("'", "''"))
-                                    .Add("text", "You have been allocated a Routine to complete")
-                                    .Add("seen", "false")
-                                    .Add("sent", "false");
-
-                DataAccess.MongoDB mdb = new DataAccess.MongoDB("RoutineManagement");
-
-                mdb.Insert("Notification", d);
+                new Notification(AssignedUser.Replace("'", "''"), "You have been allocated a Routine to complete").Send();
             }
         }
 

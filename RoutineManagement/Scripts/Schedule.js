@@ -40,9 +40,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
     $scope.TimePeriod = ['Days', 'Weeks', 'Months', 'Years'];
     $scope.PopupHidden = true;
 
-    var resetSelections = function () {
-
-       
+    var resetSelections = function () {    
         
         $scope.selectedDate = '';
         $scope.selectedRate = 1;

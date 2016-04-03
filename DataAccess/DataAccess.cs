@@ -93,8 +93,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                // throw ex;
-                return false;
+                throw ex;
             }
 
             return true;
@@ -110,7 +109,14 @@ namespace DataAccess
                     command.Parameters.Add(p);
                 }
 
-                command.ExecuteNonQuery();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
         }
 
@@ -129,7 +135,15 @@ namespace DataAccess
                 }
 
                 adapter.SelectCommand = command;
-                adapter.Fill(dt);
+
+                try
+                {
+                    adapter.Fill(dt);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
 
                 return dt;
             }
@@ -149,7 +163,15 @@ namespace DataAccess
                 }
 
                 adapter.SelectCommand = command;
-                adapter.Fill(ds);
+
+                try
+                {
+                    adapter.Fill(ds);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
 
                 return ds;
             }
@@ -170,7 +192,15 @@ namespace DataAccess
                 }
 
                 adapter.SelectCommand = command;
-                adapter.Fill(dt);
+
+                try
+                {
+                    adapter.Fill(dt);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
 
                 if (dt.Rows[0][0] != null)
                 {
@@ -197,7 +227,8 @@ namespace DataAccess
                 }
                 catch (SqlException e)
                 {
-                    int ln = e.LineNumber;
+                    //int ln = e.LineNumber;
+                    throw e;
                 }
             }
         }
@@ -212,9 +243,9 @@ namespace DataAccess
                 {
                     command.ExecuteNonQuery();
                 }
-                catch
+                catch(Exception e)
                 {
-
+                    throw e;
                 }
             }
         }

@@ -278,6 +278,10 @@
       <Project>{94905a15-ccf7-462c-9035-b38f27a14049}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EventLogger\EventLogger.csproj">
+      <Project>{f1656926-7e9e-42fb-a984-6ac6fc81f29c}</Project>
+      <Name>EventLogger</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

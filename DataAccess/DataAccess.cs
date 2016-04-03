@@ -19,10 +19,16 @@ namespace DataAccess
 
         public MongoDB(string db)
         {
-            client = new MongoClient();
-            database = client.GetDatabase(db);
+            try
+            {
+                client = new MongoClient();
+                database = client.GetDatabase(db);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
-
 
         //basic insert function
         public void Insert(string collection, BsonDocument item)
@@ -33,21 +39,31 @@ namespace DataAccess
         //get all documents in a collection which match the filter, with options to order the result based on the name of a field in the found documents
         public List<BsonDocument> Get(string collection, BsonDocument filter, string OrderDescending = "", string OrderAscending = "")
         {
-            var col = database.GetCollection<BsonDocument>(collection);
 
-            var ret = col.Find<BsonDocument>(filter);
+            List<BsonDocument> h;
 
-            if (OrderDescending != "")
+            try
             {
-               ret.SortByDescending(bson => bson[OrderDescending]);
-            }
+                var col = database.GetCollection<BsonDocument>(collection);
 
-            if (OrderAscending != "")
-            {
-                ret.SortByDescending(bson => bson[OrderAscending]);
+                var ret = col.Find<BsonDocument>(filter);
+
+                if (OrderDescending != "")
+                {
+                    ret.SortByDescending(bson => bson[OrderDescending]);
+                }
+
+                if (OrderAscending != "")
+                {
+                    ret.SortByDescending(bson => bson[OrderAscending]);
+                }
+
+                h = ret.ToList<BsonDocument>();
             }
-           
-            List<BsonDocument> h = ret.ToList<BsonDocument>();
+            catch (Exception e)
+            {
+                throw e;
+            }
 
             return h;
         }
@@ -55,14 +71,28 @@ namespace DataAccess
         //replace all documents in a collection, which match the filter, with another document.
         public void Update(string collection, BsonDocument filter, BsonDocument replacement)
         {
-            database.GetCollection<BsonDocument>(collection).ReplaceOne(filter, replacement);
+            try
+            {
+                database.GetCollection<BsonDocument>(collection).ReplaceOne(filter, replacement);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
 
         //remove all documents in a collection which match the filter.
         public void Delete(string collection, BsonDocument filter)
         {
-            database.GetCollection<BsonDocument>(collection).DeleteMany(filter);
+            try
+            {
+                database.GetCollection<BsonDocument>(collection).DeleteMany(filter);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
     }

@@ -21,8 +21,8 @@
         </h2>
 
         <p>
-            Show Completed <input type="checkbox" checked="true" ng-click="ToggleShowCompleted()" />
-            | Show only assigned to me <input type="checkbox" value="false" ng-click="ToggleShowOnlyMe()" />
+            Show Completed <input type="checkbox" ng-checked="ShowCompleted" ng-model="ShowCompleted" />
+            | Show only assigned to me <input type="checkbox" ng-checked="ShowOnlyMe" ng-model="ShowOnlyMe" />
         </p>
 
         <table class="scheduleTable" ng-if="schedule.ScheduledRoutines.length > 0">
@@ -56,7 +56,9 @@
                     <span class="sortorder" ng-show="predicate === 'CompletedBy'" ng-class="{reverse:reverse}"></span>
                 </td>
             </tr>
-            <tr class="scheduleTable--row" ng-repeat="Row in schedule.ScheduledRoutines | orderBy:predicate:reverse" ng-click="RoutineClick(Row.ScheduleID)">
+            <tr class="scheduleTable--row" ng-repeat="Row in schedule.ScheduledRoutines | orderBy:predicate:reverse" ng-click="RoutineClick(Row.ScheduleID)"
+                ng-if="(Row.CompletedOn == '' || (Row.CompletedOn != '' && ShowCompleted == true))
+                && (ShowOnlyMe == false || (ShowOnlyMe == true && UserName == Row.AssignedUser))">
                 <td class="scheduleTable--cell">{{Row.Routine}}</td>
                 <td class="scheduleTable--cell">{{Row.Area}}</td>
                 <td class="scheduleTable--cell">{{Row.AssignedTeam}}</td>
@@ -103,14 +105,14 @@
             <br />
 
             <p>Occurs Every</p>
-            <input type="number" ng-model="selectedRate" />
+            <input type="number" ng-model="$parent.selectedRate" />
 
             <select ng-options="name for name in TimePeriod"
-                    ng-model="selectedPeriod"></select>
+                    ng-model="$parent.selectedPeriod"></select>
             <br />
 
             <p>Number of occurances:</p>
-            <input type="number" ng-model="selectedNumber" />
+            <input type="number" ng-model="$parent.selectedNumber" />
 
             <br />
 

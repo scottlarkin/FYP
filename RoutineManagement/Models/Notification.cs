@@ -45,7 +45,7 @@ namespace RoutineManagement.Models
             List<BsonDocument> notifications = new List<BsonDocument>();
             string ret = "null";
 
-            for (int i = 0; i < 300; i++)
+            for (int i = 0; i < 600; i++)
             {
 
                 notifications = mdb.Get(NOTIFICATION_COL_NAME, new BsonDocument("user", user).Add("sent", "false"));
@@ -64,12 +64,11 @@ namespace RoutineManagement.Models
                     break;
                 }
 
-                System.Threading.Thread.Sleep(100);
+                System.Threading.Thread.Sleep(200);
             }
 
             return ret;
         }
-
 
         public static string GetNotificationsForUser(string user)
         {

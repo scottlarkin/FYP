@@ -21,8 +21,30 @@
             <input type="button" value="Create new Area" ng-click="CreateAreaClick()" />
             <input type="button" value="Create new Team" ng-click="CreateTeamClick()" />
             <input type="button" value="Edit user Privilege" ng-click="EditUserPrivilegeClick()" />
+            <input type="button" value="View event log" ng-click="EventLogClick()" />
 
             <br />
+
+            <div ng-show="ShowEventLog === true">
+
+                <br />
+                Event Log:
+
+                <table class="scheduleTable">
+                    <tr class="scheduleTable--row">
+                        <td>User Name</td>
+                        <td>Event</td>
+                        <td>Date Stamp</td>
+                    </tr>
+
+                    <tr ng-repeat="event in eventLog" class="scheduleTable--row">
+                        <td>{{event.user}}</td>
+                        <td>{{event.message}}</td>
+                        <td>{{event.date}}</td>
+                    </tr>
+                </table>
+
+            </div>
 
             <div ng-show="ShowAddArea === true">
 

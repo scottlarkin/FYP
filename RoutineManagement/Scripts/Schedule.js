@@ -21,6 +21,20 @@ RoutineManagement.controller("Schedule", function ($scope) {
         });
     }
 
+    $.ajax({
+        url: "http://localhost:57425/Home/GetUserName",
+        type: "GET",
+        contentType: 'application/json;',
+        dataType: 'text',
+        async: false,
+        success: function (data) {
+            $scope.UserName = data;
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+
     $scope.Loaded = false;
 
     refreshSchedule();
@@ -36,6 +50,9 @@ RoutineManagement.controller("Schedule", function ($scope) {
     $scope.Routines = new Array();
     $scope.Teams = new Array();
     $scope.Users = new Array();
+
+    $scope.ShowCompleted = true;
+    $scope.ShowOnlyMe = false;
 
     $scope.TimePeriod = ['Days', 'Weeks', 'Months', 'Years'];
     $scope.PopupHidden = true;
@@ -184,7 +201,7 @@ RoutineManagement.controller("Schedule", function ($scope) {
         sr.Rate = $scope.selectedRate;
         sr.Period = $scope.selectedPeriod;
         sr.Number = $scope.selectedNumber;
-
+      
         $.ajax({
             url: "Schedule/ScheduleRoutine",
             type: "POST",

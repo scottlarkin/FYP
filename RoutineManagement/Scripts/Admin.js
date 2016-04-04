@@ -4,6 +4,7 @@
     $scope.ShowAddArea = false;
     $scope.ShowAddTeam = false;
     $scope.ShowEditUser = false;
+    $scope.ShowEventLog = false;
 
     $scope.Users = null;
     $scope.AccessLevels = null;
@@ -12,6 +13,8 @@
 
     var LoadedUserNames = false;
     var LoadedUserAccess = false;
+    var LoadedEventLog = false;
+
     $scope.Loaded = false;
 
     document.ChecksheetLib.GetAreas();
@@ -20,10 +23,27 @@
 
     var SetLoaded = function () {
         $scope.$apply(function () {
-            $scope.Loaded = LoadedUserNames && LoadedUserAccess;
+            $scope.Loaded = LoadedUserNames && LoadedUserAccess && LoadedEventLog;
         });
     }
 
+    $.ajax({
+        url: "http://localhost:57425/Admin/GetEventLog",
+        type: "GET",
+        contentType: 'application/json;',
+        dataType: 'json',
+
+        success: function (data) {
+            $scope.$apply(function () {
+                $scope.eventLog = data;
+                console.log($scope.eventLog);
+            });
+        },
+        complete: function () {
+            LoadedEventLog = true;
+            SetLoaded();
+        }
+    });
 
     $.ajax({
         url: "http://localhost:57425/Home/GetUserPrivilege",
@@ -39,7 +59,6 @@
         complete: function () {
             LoadedUserAccess = true;
             SetLoaded();
-            console.log("asdjkhgfsduf  " + $scope.Loaded);
         }
     });
 
@@ -56,7 +75,6 @@
         complete: function () {
             LoadedUserNames = true;
             SetLoaded();
-            console.log("asdjkhgfsduf  " + $scope.Loaded);
         }
 
     });
@@ -66,6 +84,7 @@
         $scope.ShowAddArea = false;
         $scope.ShowAddTeam = false;
         $scope.ShowEditUser = false;
+        $scope.ShowEventLog = false;
     }
 
     $scope.CreateAreaClick = function () {
@@ -81,6 +100,11 @@
     $scope.EditUserPrivilegeClick = function () {
         ButtonClick();
         $scope.ShowEditUser = true;
+    }
+
+    $scope.EventLogClick = function () {
+        ButtonClick();
+        $scope.ShowEventLog = true;
     }
 
     $scope.UserClick = function (userName) {

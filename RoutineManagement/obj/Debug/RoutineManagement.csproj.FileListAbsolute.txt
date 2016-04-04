@@ -193,3 +193,5 @@ E:\GitHub\FYP\RoutineManagement\bin\System.Web.Http.Owin.xml
 E:\GitHub\FYP\RoutineManagement\obj\Debug\RoutineManagement.csprojResolveAssemblyReference.cache
 E:\GitHub\FYP\RoutineManagement\obj\Debug\RoutineManagement.dll
 E:\GitHub\FYP\RoutineManagement\obj\Debug\RoutineManagement.pdb
+E:\GitHub\FYP\RoutineManagement\bin\EventLogger.dll
+E:\GitHub\FYP\RoutineManagement\bin\EventLogger.pdb

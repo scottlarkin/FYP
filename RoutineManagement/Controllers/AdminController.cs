@@ -1,5 +1,5 @@
 ﻿using DataAccess;
-using EventLogger.EventLogger;
+using EventLogger;
 using RoutineManagement.Models;
 using System;
 using System.Collections.Generic;
@@ -13,11 +13,20 @@ namespace RoutineManagement.Controllers
 {
     public class AdminController : Controller
     {
+        struct Event
+        {
+            public string user;
+            public string message;
+            public string date;
+        };
+
         public void UpdateUserAccessLevel(string UserName, int AccessLevelID)
         {
             try
             {
                 UserInfo.UpdateAccessLevel(UserName, AccessLevelID);
+
+                new Notification(UserName, "Your access level has changed. You may have to refresh the page for changes to take effect.").Send();
             }
             catch (Exception e)
             {
@@ -72,7 +81,41 @@ namespace RoutineManagement.Controllers
             {
                 new EventLogger.EventLogger("Routine Management", "Application").WriteException(e);
             }
+        }
 
+        public string GetEventLog()
+        {
+            string ret = "";
+
+            List<Event> events = new List<Event>();
+
+            try
+            {
+                using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+                {
+                    using (DataTable dt = database.GetDataTable("dbo.LogGet", new List<SqlParameter>()))
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            Event e;
+                            e.user = dr["User"].ToString();
+                            e.message = dr["Message"].ToString();
+                            e.date = dr["Date"].ToString();
+
+                            events.Add(e);
+                        }
+                    }
+
+                    ret = new JavaScriptSerializer().Serialize(Json(events).Data);
+                }
+               
+            }
+            catch (Exception e)
+            {
+                new EventLogger.EventLogger("Routine Management", "Application").WriteException(e);
+            }
+
+            return ret;
         }
     }
 }

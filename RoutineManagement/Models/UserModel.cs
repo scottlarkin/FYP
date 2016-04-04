@@ -36,6 +36,14 @@ namespace RoutineManagement.Models
             return p;
         }
 
+        public static void RegisterUser()
+        {
+            using (SqlServer database = new SqlServer(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                database.ExecuteProcedure("dbo.RegisterUser");
+            }
+        }
+
         public static string GetUserName()
         {
             string n = "";

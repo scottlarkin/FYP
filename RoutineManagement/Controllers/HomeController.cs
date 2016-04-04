@@ -40,6 +40,18 @@ namespace RoutineManagement.Controllers
             return View();
         }
 
+        public void RegisterUser()
+        {
+            try
+            {
+                UserInfo.RegisterUser();
+            }
+            catch (Exception e)
+            {
+                new EventLogger.EventLogger("Routine Management", "Application").WriteException(e);
+            }
+        }
+
         public int GetUserPrivilege()
         {
             int p = 0;

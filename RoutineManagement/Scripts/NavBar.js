@@ -17,6 +17,13 @@
     }
 
     $.ajax({
+        url: "http://localhost:57425/Home/RegisterUser",
+        type: "POST",
+        contentType: 'application/json;',
+        dataType: 'json'
+    });
+
+    $.ajax({
         url: "http://localhost:57425/Home/GetUserPrivilege",
         type: "GET",
         contentType: 'application/json;',

@@ -92,8 +92,8 @@
                 console.log(data);
             },
             complete: function () {
-               
-                poll();
+                //start again
+                poll(); 
             },
             
             timeout: 10000000 //timeout handled on the server side - see Notification.cs

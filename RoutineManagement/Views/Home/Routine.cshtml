@@ -78,11 +78,12 @@
                 <input type="button" value="Post Comment" ng-click="PostCommentClick()" />
             </div>
 
-            <div ng-repeat ="comment in comments">
+            <div ng-repeat="comment in comments">
 
                 <div class="commentBox">
                     <div class="commentBox--header">
-                        {{comment.UserName}}   |  {{comment.DateStamp}}    |  <span style="color:#0f6ae8;cursor:pointer" ng-click="ReplyClick(comment.ID)">Reply</span>  |  <span style="color:#0f6ae8;cursor:pointer" ng-click="ToggleReplies(comment.ID)" class="js-toggleText{{comment.ID}}">Hide Replies</span>
+                        {{comment.UserName}}   |  {{comment.DateStamp}}    |  <span style="color:#0f6ae8;cursor:pointer" ng-click="ReplyClick(comment.ID)">Reply</span>
+                        |  <span style="color:#0f6ae8;cursor:pointer" ng-click="ToggleReplies(comment.ID)" class="js-toggleText{{comment.ID}}">Hide Replies</span>
                     </div>
 
                     {{comment.Text}}

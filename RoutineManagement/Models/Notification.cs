@@ -52,11 +52,13 @@ namespace RoutineManagement.Models
 
                 if (notifications.Count > 0)
                 {
+                    //convert new notifications to JSON string
                     ret = ParseNotifications(notifications, (item) =>
                     {
 
                         BsonDocument updated = (BsonDocument)item.Clone();
                         updated["sent"] = "true";
+                        //mark notification as sent
                         mdb.Update(NOTIFICATION_COL_NAME, item, updated);
 
                     });

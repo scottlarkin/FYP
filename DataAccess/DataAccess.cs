@@ -106,7 +106,14 @@ namespace DataAccess
         public SqlServer(string ConnectionString)
         {
             connectionString = ConnectionString;
-            Connect();
+            try
+            {
+                Connect();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         ~SqlServer()
@@ -128,28 +135,6 @@ namespace DataAccess
 
             return true;
         }
-
-        public void ExecuteCommand(string SQL, List<SqlParameter> parameters)
-        {
-            using (SqlCommand command = new SqlCommand(SQL, connection))
-            {
-
-                foreach (SqlParameter p in parameters)
-                {
-                    command.Parameters.Add(p);
-                }
-
-                try
-                {
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
-            }
-        }
-
 
         public DataTable GetDataTable(string SQL, List<SqlParameter> parameters)
         {

@@ -47,7 +47,10 @@
                     </p>
 
                     <div ng-repeat="notification in notifications" class="notification">
-                        <p><span class="newNotification" ng-if="notification.seen === 'false'">* NEW *</span>{{notification.date}}</p>
+                        <p>
+                            <span class="newNotification" ng-if="notification.seen === 'false'">* NEW *</span>
+                            {{notification.date}}
+                        </p>
                         <p>{{notification.text}}</p>
 
                     </div>

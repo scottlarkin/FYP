@@ -340,7 +340,6 @@ namespace RoutineManagement.Models
                 parameters.Add(new SqlParameter("@Area", SqlDbType.NVarChar) { Value = Area.ToString().Replace("'", "''") });
 
                 database.ExecuteProcedure("dbo.RoutineSave", parameters);
-
             }
 
             return success;
